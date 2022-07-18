@@ -26,4 +26,5 @@ in
   gamescope = super.callPackage ./pkgs/gamescope {
     udev = final.systemdMinimal;
   };
+  gamescope-session = super.callPackage ./pkgs/gamescope-session { };
 }
