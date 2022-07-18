@@ -19,6 +19,10 @@ in
       kernelPatches.export-rt-sched-migrate
     ];
   };
+  linuxPackages_jovian_guest = linuxPackagesFor final.linux_jovian_guest;
+  linux_jovian_guest = final.linux_jovian.override {
+    guestSupport = true;
+  };
   gamescope = super.callPackage ./pkgs/gamescope {
     udev = final.systemdMinimal;
   };
