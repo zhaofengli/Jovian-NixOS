@@ -17,6 +17,13 @@ buildLinux (args // rec {
   # branchVersion needs to be x.y
   extraMeta.branch = versions.majorMinor version;
 
+  kernelPatches = [
+    {
+      name = "set-vm-max-map-count-to-some-giant-value";
+      patch = ./max_map_count.patch;
+    }
+  ];
+
   structuredExtraConfig = with lib.kernel; {
     #
     # From the downstream packaging
