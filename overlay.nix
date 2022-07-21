@@ -11,7 +11,6 @@ in
   linux-firmware = final.callPackage ./pkgs/linux-firmware {
     linux-firmware = super.linux-firmware;
   };
-  jupiter-hw-support = final.callPackage ./pkgs/jupiter-hw-support { };
   linuxPackages_jovian = linuxPackagesFor final.linux_jovian;
   linux_jovian = super.callPackage ./pkgs/linux-jovian {
     kernelPatches = [
@@ -28,4 +27,8 @@ in
     udev = final.systemdMinimal;
   };
   gamescope-session = super.callPackage ./pkgs/gamescope-session { };
+
+  jupiter-hw-support = final.callPackage ./pkgs/jupiter-hw-support { };
+  steamdeck-theme = final.jupiter-hw-support.theme;
+  steamdeck-firmware = final.jupiter-hw-support.firmware;
 }

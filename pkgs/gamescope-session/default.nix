@@ -4,6 +4,7 @@
 , gamescope
 , mangohud
 , jupiter-hw-support
+, steamdeck-theme
 , writeShellScriptBin
 }:
 
@@ -58,7 +59,7 @@ in runCommand "gamescope-session" {
   passthru.providedSessions = [ "gamescope-wayland" ];
 } ''
   mkdir -p $out/bin
-  path=${binPath} hwsupport=${jupiter-hw-support} \
+  path=${binPath} hwsupport=${jupiter-hw-support} theme=${steamdeck-theme}\
     substituteAll ${./gamescope-session} $out/bin/gamescope-session
   chmod +x $out/bin/gamescope-session
 
