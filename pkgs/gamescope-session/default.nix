@@ -1,4 +1,5 @@
-{ lib, stdenv
+{ lib
+, runCommand
 , steam
 , gamescope
 , mangohud
@@ -52,19 +53,15 @@ let
   };
 
   binPath = lib.makeBinPath [ wrappedSteam gamescope mangohud ];
-in stdenv.mkDerivation {
-  name = "gamescope-session";
-  src = ./gamescope-session;
+in runCommand "gamescope-session" {
+  passthru.steam = wrappedSteam;
+  passthru.providedSessions = [ "gamescope-wayland" ];
+} ''
+  mkdir -p $out/bin
+  path=${binPath} hwsupport=${jupiter-hw-support} \
+    substituteAll ${./gamescope-session} $out/bin/gamescope-session
+  chmod +x $out/bin/gamescope-session
 
-  dontUnpack = true;
-  dontConfigure = true;
-  dontBuild = true;
-
-  installPhase = ''
-    mkdir -p $out/bin
-    path=${binPath} hwsupport=${jupiter-hw-support} \
-      substituteAll $src $out/bin/gamescope-session
-
-    chmod +x $out/bin/gamescope-session
-  '';
-}
+  mkdir -p $out/share/wayland-sessions
+  substituteAll ${./gamescope-wayland.desktop.in} $out/share/wayland-sessions/gamescope-wayland.desktop
+''
