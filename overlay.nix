@@ -28,6 +28,8 @@ in
   };
   gamescope-session = super.callPackage ./pkgs/gamescope-session { };
 
+  jupiter-fan-control = final.callPackage ./pkgs/jupiter-fan-control { };
+
   jupiter-hw-support = final.callPackage ./pkgs/jupiter-hw-support { };
   steamdeck-theme = final.jupiter-hw-support.theme;
   steamdeck-firmware = final.jupiter-hw-support.firmware;
