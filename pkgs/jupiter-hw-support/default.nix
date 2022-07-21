@@ -37,6 +37,8 @@ stdenv.mkDerivation rec {
     mkdir -p $out/lib
     cp -r usr/lib/hwsupport $out/lib
 
+    sed -i "s|~/.steam/root/ubuntu12_32/steam|steam|g" $out/lib/hwsupport/power-button-handler.py
+
     mkdir -p $out/share
     cp -r usr/share/icons $out/share
     cp -r usr/share/steamos $out/share
@@ -44,6 +46,8 @@ stdenv.mkDerivation rec {
     cp -r usr/share/jupiter_bios $out/share
     cp -r usr/share/jupiter_bios_updater $out/share
     cp -r usr/share/jupiter_controller_fw_updater $out/share
+
+    sed -i "s|/usr/|$out/|g" $out/share/plymouth/themes/steamos/steamos.plymouth
 
     pushd $out/share/steamos
     xcursorgen steamos-cursor-config $out/share/icons/steam/cursors/default
