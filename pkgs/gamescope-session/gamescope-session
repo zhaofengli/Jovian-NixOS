@@ -196,7 +196,7 @@ gamescope \
 	-O '*',eDP-1 \
 	--cursor-hotspot 5,3 --cursor @theme@/share/steamos/steamos-cursor.png \
 	&
-gamescope_pid="$!"
+export gamescope_pid="$!"
 
 if read -r -t 3 response_x_display response_wl_display <> "$socket"; then
 	export DISPLAY="$response_x_display"

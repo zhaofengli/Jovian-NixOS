@@ -8,6 +8,9 @@
 , writeShellScriptBin
 }:
 
+# TODO: Integrate this into modules/steam.nix. gamescope-session can be run on an
+# existing desktop, in which case gamescope will be started in nested mode.
+
 let
   # The sudo wrapper doesn't work in FHS environments. For our purposes
   # we add a dummy sudo command that does not actually escalate privileges.
@@ -44,9 +47,33 @@ let
     >&2 echo "dummy jupiter-biosupdate"
   '';
 
+  # A very simplistic "session switcher." All it does is kill gamescope.
+  sessionSwitcher = writeShellScriptBin "steamos-session-select" ''
+    session="''${1:-gamescope}"
+
+    >>~/gamescope.log echo "steamos-session-select: switching to $session"
+
+    if [[ "$session" != "plasma" ]]; then
+      >&2 echo "!! Unsupported session '$session'"
+      >&2 echo "Currently this can only be called by Steam to switch to Desktop Mode"
+      exit 1
+    fi
+
+    mkdir -p ~/.local/state
+    >~/.local/state/steamos-session-select echo "$session"
+
+    if [[ -n "$gamescope_pid" ]]; then
+      kill "$gamescope_pid"
+    else
+      >&2 echo "!! Don't know how to kill gamescope"
+      exit 1
+    fi
+  '';
+
   wrappedSteam = steam.override {
     extraPkgs = pkgs: [
       dummyOsUpdater dummyBiosUpdater
+      sessionSwitcher
     ];
     extraProfile = ''
       export PATH=${dummySudo}/bin:$PATH
