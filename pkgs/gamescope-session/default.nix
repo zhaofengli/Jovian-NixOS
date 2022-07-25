@@ -54,7 +54,7 @@ let
     extraArgs = "-steamdeck";
   };
 
-  binPath = lib.makeBinPath [ wrappedSteam gamescope mangohud ];
+  binPath = lib.makeBinPath [ wrappedSteam wrappedSteam.run gamescope mangohud ];
 in runCommand "gamescope-session" {
   passthru.steam = wrappedSteam;
   passthru.providedSessions = [ "gamescope-wayland" ];

@@ -221,7 +221,7 @@ steamargs=("-steamos3" "-steampal" "-steamdeck" "-gamepadui")
 # steamargs+=("-steamfs")
 
 (while true; do
-    @hwsupport@/lib/hwsupport/power-button-handler.py
+    steam-run @hwsupport@/lib/hwsupport/power-button-handler.py
 done) &
 
 

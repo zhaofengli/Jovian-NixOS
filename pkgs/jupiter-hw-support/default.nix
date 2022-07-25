@@ -68,8 +68,6 @@ stdenv.mkDerivation rec {
     mkdir -p $out/lib
     cp -r usr/lib/hwsupport $out/lib
 
-    sed -i "s|~/.steam/root/ubuntu12_32/steam|steam|g" $out/lib/hwsupport/power-button-handler.py
-
     mkdir -p $out/share
     cp -r usr/share/alsa $out/share
   '';
