@@ -57,18 +57,22 @@ export WINEDLLOVERRIDES=dxgi=n
 # See: jupiter/tasks/-/issues/280
 export STEAMOS_STEAM_REBOOT_SENTINEL="/tmp/steamos-reboot-sentinel"
 if [[ -e "$STEAMOS_STEAM_REBOOT_SENTINEL" ]]; then
+	>&2 echo "Rebooting"
 	rm -f "$STEAMOS_STEAM_REBOOT_SENTINEL"
-	/usr/bin/steamos-polkit-helpers/steamos-reboot-now
-	sudo -n reboot
+	reboot
+	sleep 10
+	exit 0
 fi
 
 # Workaround for steam getting killed immediatly during shutdown
 # Same idea as reboot sentinel above
 export STEAMOS_STEAM_SHUTDOWN_SENTINEL="/tmp/steamos-shutdown-sentinel"
 if [[ -e "$STEAMOS_STEAM_SHUTDOWN_SENTINEL" ]]; then
+	>&2 echo "Shutting down"
 	rm -f "$STEAMOS_STEAM_SHUTDOWN_SENTINEL"
-	/usr/bin/steamos-polkit-helpers/steamos-poweroff-now
-	sudo -n poweroff
+	poweroff
+	sleep 10
+	exit 0
 fi
 
 # Enable dynamic backlight, we have the kernel patch to disable events
