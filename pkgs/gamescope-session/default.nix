@@ -51,6 +51,7 @@ let
     extraProfile = ''
       export PATH=${dummySudo}/bin:$PATH
     '';
+    extraArgs = "-steamdeck";
   };
 
   binPath = lib.makeBinPath [ wrappedSteam gamescope mangohud ];
