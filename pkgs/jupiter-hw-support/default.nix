@@ -1,41 +1,61 @@
-{ lib, stdenv, python3, fetchurl, git, xorg }:
+{ lib
+, stdenv
+, fetchFromGitHub
+, autoPatchelfHook
+, makeWrapper
+, python3
+, xorg
 
+# jupiter-biosupdate
+, libkrb5
+, zlib
+, jq
+, dmidecode
+}:
+
+let
+  pythonEnv = python3.withPackages (py: with py; [
+    evdev
+    crcmod
+    click
+    progressbar
+    hid
+  ]);
+in
 stdenv.mkDerivation rec {
   pname = "jupiter-hw-support";
-  version = "20220708.1-2";
+  version = "20220721.3";
 
   outputs = [ "out" "theme" "firmware" ];
 
-  src = fetchurl {
-    url = "https://steamdeck-packages.steamos.cloud/archlinux-mirror/sources/jupiter-main/jupiter-hw-support-${version}.src.tar.gz";
-    sha256 = "sha256-e+PGN3phiGe8JX56/DUL9g9B7AEvdNSZLprwzS4MhpI=";
+  src = fetchFromGitHub {
+    owner = "Jovian-Experiments";
+    repo = "jupiter-hw-support";
+    rev = "jupiter-${version}";
+    sha256 = "sha256-uJZMFxiDcmzkLOp6NXHfRL4FBZbCkau5A/snW4j2Zrg=";
   };
 
   nativeBuildInputs = [
-    git
+    autoPatchelfHook
+    makeWrapper
     xorg.xcursorgen
   ];
 
   buildInputs = [
-    (python3.withPackages (py: with py; [
-      evdev
-      crcmod
-      click
-      progressbar
-      hid
-    ]))
+    # auto patchelf
+    libkrb5
+    zlib
+    stdenv.cc.cc # libstdc++.so.6
+
+    pythonEnv
   ];
 
-  unpackPhase = ''
-    tar xpf $src jupiter-hw-support/jupiter-hw-support --strip-components=1
-    mv jupiter-hw-support{,.git}
-
-    git clone jupiter-hw-support.git jupiter-hw-support
-  '';
-
-  sourceRoot = "jupiter-hw-support";
+  dontConfigure = true;
+  dontBuild = true;
 
   installPhase = ''
+    runHook preInstall
+
     # Themes
 
     mkdir -p $theme/share
@@ -51,10 +71,20 @@ stdenv.mkDerivation rec {
 
     # Firmware
 
-    mkdir -p $firmware/share
+    mkdir -p $firmware/{bin,share}
     cp -r usr/share/jupiter_bios $firmware/share
     cp -r usr/share/jupiter_bios_updater $firmware/share
     cp -r usr/share/jupiter_controller_fw_updater $firmware/share
+
+    cp usr/bin/jupiter-biosupdate $firmware/bin
+    sed -i "s|/usr/|$firmware/|g" $firmware/bin/jupiter-biosupdate
+    wrapProgram $firmware/bin/jupiter-biosupdate \
+      --prefix PATH : ${lib.makeBinPath [ jq dmidecode ]}
+
+    cp usr/bin/jupiter-controller-update $firmware/bin
+    sed -i "s|/usr/|$firmware/|g" $firmware/bin/jupiter-controller-update
+    wrapProgram $firmware/bin/jupiter-controller-update \
+      --prefix PATH : ${lib.makeBinPath [ jq pythonEnv ]}
 
     pushd $firmware/share/jupiter_bios_updater
     # Upstream comment:
@@ -70,6 +100,8 @@ stdenv.mkDerivation rec {
 
     mkdir -p $out/share
     cp -r usr/share/alsa $out/share
+
+    runHook postInstall
   '';
 
   meta = with lib; {
