@@ -1,0 +1,14 @@
+diff --git a/usr/bin/jupiter-biosupdate b/usr/bin/jupiter-biosupdate
+index e5ce788..012b647 100755
+--- a/usr/bin/jupiter-biosupdate
++++ b/usr/bin/jupiter-biosupdate
+@@ -34,7 +34,8 @@ BIOS_VERSION_MAP='{
+                     "F7A0102": { "default": "F7A0108", "samsung": "F7A0108", "beta": null, "samsung_beta": null, "args": "", "auto": "true" },
+                     "F7A0103": { "default": "F7A0108", "samsung": "F7A0108", "beta": null, "samsung_beta": null, "args": "", "auto": "true" },
+                     "F7A0104": { "default": "F7A0108", "samsung": "F7A0108", "beta": null, "samsung_beta": null, "args": "", "auto": "true" },
+-                    "F7A0105": { "default": "F7A0108", "samsung": "F7A0108", "beta": null, "samsung_beta": null, "args": "", "auto": "true" }
++                    "F7A0105": { "default": "F7A0108", "samsung": "F7A0108", "beta": null, "samsung_beta": null, "args": "", "auto": "true" },
++                    "F7A0107": { "default": "F7A0108", "samsung": "F7A0108", "beta": null, "samsung_beta": null, "args": "", "auto": "true" }
+                   }'
+ 
+ # Bios to attempt to install

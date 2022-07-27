@@ -35,6 +35,10 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-uJZMFxiDcmzkLOp6NXHfRL4FBZbCkau5A/snW4j2Zrg=";
   };
 
+  patches = [
+    ./f7a0107.patch
+  ];
+
   nativeBuildInputs = [
     autoPatchelfHook
     makeWrapper
