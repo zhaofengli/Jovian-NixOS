@@ -31,6 +31,6 @@ in
   jupiter-fan-control = final.callPackage ./pkgs/jupiter-fan-control { };
 
   jupiter-hw-support = final.callPackage ./pkgs/jupiter-hw-support { };
-  steamdeck-theme = final.jupiter-hw-support.theme;
-  steamdeck-firmware = final.jupiter-hw-support.firmware;
+  steamdeck-theme = final.callPackage ./pkgs/jupiter-hw-support/theme.nix { };
+  steamdeck-firmware = final.callPackage ./pkgs/jupiter-hw-support/firmware.nix { };
 }
