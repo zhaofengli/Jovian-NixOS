@@ -18,7 +18,7 @@ let
     evdev
     crcmod
     click
-    progressbar
+    progressbar2
     hid
   ]);
 in
