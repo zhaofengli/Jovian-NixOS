@@ -8,7 +8,7 @@ let
   src = callPackage ./src.nix { };
 in
 stdenv.mkDerivation {
-  pname = "steamdeck-theme";
+  pname = "steamdeck-hw-theme";
 
   inherit src;
   inherit (src) version;
@@ -36,7 +36,7 @@ stdenv.mkDerivation {
   '';
 
   meta = with lib; {
-    description = "Steam Deck themes";
+    description = "Steam Deck themes (base)";
     license = licenses.unfreeRedistributable;
   };
 }
