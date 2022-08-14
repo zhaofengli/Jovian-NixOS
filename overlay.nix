@@ -35,4 +35,6 @@ in
   steamdeck-firmware = final.callPackage ./pkgs/jupiter-hw-support/firmware.nix { };
 
   steamdeck-theme = final.callPackage ./pkgs/steamdeck-theme { };
+
+  sdgyrodsu = final.callPackage ./pkgs/sdgyrodsu { };
 }
