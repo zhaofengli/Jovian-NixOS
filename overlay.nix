@@ -23,9 +23,6 @@ in
   linux_jovian_guest = final.linux_jovian.override {
     guestSupport = true;
   };
-  gamescope = super.callPackage ./pkgs/gamescope {
-    udev = final.systemdMinimal;
-  };
   gamescope-session = super.callPackage ./pkgs/gamescope-session { };
 
   jupiter-fan-control = final.callPackage ./pkgs/jupiter-fan-control { };
