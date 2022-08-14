@@ -35,6 +35,9 @@ in
         # This rule is needed for basic functionality of the controller in Steam and keyboard/mouse emulation
         SUBSYSTEM=="usb", ATTRS{idVendor}=="28de", MODE="0666"
 
+        # This rule is needed to expose the hiddev devices for other applications
+        SUBSYSTEM=="usbmisc", ATTRS{idVendor}=="28de", MODE="0666"
+
         # Valve HID devices over USB hidraw
         KERNEL=="hidraw*", ATTRS{idVendor}=="28de", MODE="0666"
       '';
