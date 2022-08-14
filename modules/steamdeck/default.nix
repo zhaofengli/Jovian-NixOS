@@ -18,6 +18,7 @@ in
     ./hw-support.nix
     ./kernel.nix
     ./perf-control.nix
+    ./sdgyrodsu.nix
     ./sound.nix
   ];
 
