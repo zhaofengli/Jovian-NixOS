@@ -5,10 +5,10 @@ stdenv.mkDerivation {
   version = "1.14";
 
   src = fetchFromGitHub {
-    owner = "zhaofengli";
+    owner = "kmicki";
     repo = "SteamDeckGyroDSU";
-    rev = "0837755fd61397e8de68f88d97ed4cbf048fb68e";
-    sha256 = "sha256-ZVvUIBUJ5G0yfUIKTdBYSlhFyMWP9U7eUTdsTMJAgrA=";
+    rev = "6244cbc3ec55687efa9b6ade32d6c04637065003";
+    sha256 = "sha256-3hMSgFqNV9GyShwU0aB3tEpx82SUBHGl9jpYDYDua8k=";
   };
 
   buildInputs = [ ncurses ];
