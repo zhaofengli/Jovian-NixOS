@@ -62,10 +62,6 @@ stdenv.mkDerivation {
   inherit src;
   inherit (src) version;
 
-  patches = [
-    ./f7a0107.patch
-  ];
-
   nativeBuildInputs = [
     autoPatchelfHook
     makeWrapper
