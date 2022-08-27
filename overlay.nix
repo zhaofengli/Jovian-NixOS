@@ -36,4 +36,10 @@ in
   sdgyrodsu = final.callPackage ./pkgs/sdgyrodsu { };
 
   decky-loader = final.callPackage ./pkgs/decky-loader { };
+
+  steamPackages = super.steamPackages.overrideScope (scopeFinal: scopeSuper: {
+    steam = final.callPackage ./pkgs/steam-jupiter-original {
+      steam-original = scopeSuper.steam;
+    };
+  });
 }
