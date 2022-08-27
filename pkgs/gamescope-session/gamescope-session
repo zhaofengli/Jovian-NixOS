@@ -198,14 +198,8 @@ steamargs=("-steamos3" "-steampal" "-steamdeck" "-gamepadui")
     steam-run @hwsupport@/lib/hwsupport/power-button-handler.py
 done) &
 
-
-if [[ -x $HOME/devkit-game/devkit-steam ]]; then
-	mangoapp &
-	"$HOME"/devkit-game/devkit-steam "${steamargs[@]}"
-else
-	mangoapp &
-	steam "${steamargs[@]}"
-fi
+mangoapp &
+steam "${steamargs[@]}"
 
 # Ask gamescope to exit nicely
 kill $gamescope_pid
