@@ -13,10 +13,11 @@
 
 let
   # The sudo wrapper doesn't work in FHS environments. For our purposes
-  # we add a dummy sudo command that does not actually escalate privileges.
+  # we add a passthrough sudo command that does not actually escalate
+  # privileges.
   #
   # <https://github.com/NixOS/nixpkgs/issues/42117>
-  dummySudo = writeShellScriptBin "sudo" ''
+  passthroughSudo = writeShellScriptBin "sudo" ''
     declare -a final
 
     positional=""
@@ -34,17 +35,17 @@ let
     exec "''${final[@]}"
   '';
 
-  # Dummy SteamOS updater that does nothing
+  # Null SteamOS updater that does nothing
   #
   # This gets us past the OS update step in the OOBE wizard.
-  dummyOsUpdater = writeShellScriptBin "steamos-update" ''
-    >&2 echo "dummy steamos-update"
+  nullOsUpdater = writeShellScriptBin "steamos-update" ''
+    >&2 echo "steamos-update: Not supported on NixOS - Doing nothing"
     exit 7;
   '';
 
-  # Dummy Steam Deck BIOS updater that does nothing
-  dummyBiosUpdater = writeShellScriptBin "jupiter-biosupdate" ''
-    >&2 echo "dummy jupiter-biosupdate"
+  # Null Steam Deck BIOS updater that does nothing
+  nullBiosUpdater = writeShellScriptBin "jupiter-biosupdate" ''
+    >&2 echo "jupiter-biosupdate: Doing nothing"
   '';
 
   # A very simplistic "session switcher." All it does is kill gamescope.
@@ -72,11 +73,11 @@ let
 
   wrappedSteam = steam.override {
     extraPkgs = pkgs: [
-      dummyOsUpdater dummyBiosUpdater
+      nullOsUpdater nullBiosUpdater
       sessionSwitcher
     ];
     extraProfile = ''
-      export PATH=${dummySudo}/bin:$PATH
+      export PATH=${passthroughSudo}/bin:$PATH
     '';
     extraArgs = "-steamdeck";
   };
