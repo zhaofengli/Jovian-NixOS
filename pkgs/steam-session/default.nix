@@ -8,7 +8,7 @@
 , writeShellScriptBin
 }:
 
-# TODO: Integrate this into modules/steam.nix. gamescope-session can be run on an
+# TODO: Integrate this into modules/steam.nix. steam-session can be run on an
 # existing desktop, in which case gamescope will be started in nested mode.
 
 let
@@ -82,15 +82,15 @@ let
   };
 
   binPath = lib.makeBinPath [ wrappedSteam wrappedSteam.run gamescope mangohud ];
-in runCommand "gamescope-session" {
+in runCommand "steam-session" {
   passthru.steam = wrappedSteam;
-  passthru.providedSessions = [ "gamescope-wayland" ];
+  passthru.providedSessions = [ "steam-wayland" ];
 } ''
   mkdir -p $out/bin
   path=${binPath} hwsupport=${jupiter-hw-support} theme=${steamdeck-hw-theme}\
-    substituteAll ${./gamescope-session} $out/bin/gamescope-session
-  chmod +x $out/bin/gamescope-session
+    substituteAll ${./steam-session} $out/bin/steam-session
+  chmod +x $out/bin/steam-session
 
   mkdir -p $out/share/wayland-sessions
-  substituteAll ${./gamescope-wayland.desktop.in} $out/share/wayland-sessions/gamescope-wayland.desktop
+  substituteAll ${./steam-wayland.desktop.in} $out/share/wayland-sessions/steam-wayland.desktop
 ''

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Gaming Mode
-Exec=@out@/bin/gamescope-session
+Exec=@out@/bin/steam-session
 Icon=steamicon.png
 Type=Application
 DesktopNames=gamescope

@@ -23,7 +23,7 @@ in
   linux_jovian_guest = final.linux_jovian.override {
     guestSupport = true;
   };
-  gamescope-session = super.callPackage ./pkgs/gamescope-session { };
+  steam-session = super.callPackage ./pkgs/steam-session { };
 
   jupiter-fan-control = final.callPackage ./pkgs/jupiter-fan-control { };
 
