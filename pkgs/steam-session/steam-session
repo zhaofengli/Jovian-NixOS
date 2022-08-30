@@ -161,7 +161,6 @@ gamescope \
 	--fullscreen \
 	--generate-drm-mode fixed \
 	--xwayland-count 2 \
-	-w 1280 -h 800 \
 	--default-touch-mode 4 \
 	--hide-cursor-delay 3000 \
 	--max-scale 2 \
