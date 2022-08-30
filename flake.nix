@@ -2,12 +2,13 @@
   description = "NixOS on Steam Deck";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:zhaofengli/nixpkgs/zhaofeng-22.11";
   };
 
   outputs = { self, nixpkgs }: let
     pkgs = import nixpkgs {
       system = "x86_64-linux";
+      config.allowUnfree = true;
       overlays = [
         self.overlay
       ];
