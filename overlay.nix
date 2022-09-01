@@ -23,7 +23,6 @@ in
   linux_jovian_guest = final.linux_jovian.override {
     guestSupport = true;
   };
-  steam-session = super.callPackage ./pkgs/steam-session { };
 
   jupiter-fan-control = final.callPackage ./pkgs/jupiter-fan-control { };
 
@@ -38,8 +37,11 @@ in
   decky-loader = final.callPackage ./pkgs/decky-loader { };
 
   steamPackages = super.steamPackages.overrideScope (scopeFinal: scopeSuper: {
-    steam = final.callPackage ./pkgs/steam-jupiter-original {
+    steam = final.callPackage ./pkgs/steam-jupiter/unwrapped.nix {
       steam-original = scopeSuper.steam;
+    };
+    steam-fhsenv = final.callPackage ./pkgs/steam-jupiter/fhsenv.nix {
+      steam-fhsenv = scopeSuper.steam-fhsenv;
     };
   });
 }
