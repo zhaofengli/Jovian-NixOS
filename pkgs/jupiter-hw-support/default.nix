@@ -30,6 +30,17 @@ stdenv.mkDerivation {
     mkdir -p $out/share
     cp -r usr/share/alsa $out/share
 
+    cat > $out/share/alsa/ucm2/ucm.conf <<EOF
+    Syntax 3
+
+    UseCasePath {
+        legacy {
+            Directory "conf.d/acp5x"
+            File "acp5x.conf"
+        }
+    }
+    EOF
+
     runHook postInstall
   '';
 
