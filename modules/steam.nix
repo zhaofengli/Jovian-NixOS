@@ -44,6 +44,12 @@ let
     export STEAM_USE_MANGOAPP=1
     export MANGOHUD_CONFIGFILE=$(mktemp $XDG_RUNTIME_DIR/mangohud.XXXXXXXX)
 
+    # Add MangoApp implicit layer to search path
+    export XDG_DATA_DIRS=${mangohud}/share''${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}
+
+    # Activate MangoApp implicit layer
+    export MANGOAPP=1
+
     powerbuttonPath="/dev/input/by-path/platform-i8042-serio-0-event-kbd"
 
     # Initially write no_display to our config file
