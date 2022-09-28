@@ -26,6 +26,8 @@ in
 
   mesa-jupiter = final.callPackage ./pkgs/mesa-jupiter { };
 
+  xwayland-jupiter = final.callPackage ./pkgs/xwayland-jupiter { };
+
   jupiter-fan-control = final.callPackage ./pkgs/jupiter-fan-control { };
 
   jupiter-hw-support = final.callPackage ./pkgs/jupiter-hw-support { };
