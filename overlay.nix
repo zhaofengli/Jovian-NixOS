@@ -27,6 +27,9 @@ in
   mesa-jupiter = final.callPackage ./pkgs/mesa-jupiter { };
 
   xwayland-jupiter = final.callPackage ./pkgs/xwayland-jupiter { };
+  gamescope = super.gamescope.override {
+    xwayland = final.xwayland-jupiter;
+  };
 
   jupiter-fan-control = final.callPackage ./pkgs/jupiter-fan-control { };
 
