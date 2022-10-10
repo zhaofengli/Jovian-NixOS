@@ -28,6 +28,9 @@ in
 
   xwayland-jupiter = final.callPackage ./pkgs/xwayland-jupiter { };
   gamescope = super.gamescope.override {
+    wlroots = final.wlroots.override {
+      xwayland = final.xwayland-jupiter;
+    };
     xwayland = final.xwayland-jupiter;
   };
 

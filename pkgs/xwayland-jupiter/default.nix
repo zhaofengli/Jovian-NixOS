@@ -1,6 +1,6 @@
 # Xwayland with SteamOS 3.x patches to better integrate with gamescope
 #
-# Differences from upstream: <https://github.com/mirror/xserver/compare/master...Jovian-Experiments:xserver:jupiter-20220831>
+# Differences from upstream: <https://github.com/freedesktop/xorg-xserver/compare/master...Jovian-Experiments:xserver:jupiter-20220831>
 
 { lib, xwayland, fetchpatch }:
 
