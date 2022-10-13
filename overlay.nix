@@ -41,6 +41,8 @@ in
   steamdeck-firmware = final.callPackage ./pkgs/jupiter-hw-support/firmware.nix { };
   steamdeck-bios-fwupd = final.callPackage ./pkgs/jupiter-hw-support/bios-fwupd.nix { };
 
+  jupiter-dock-updater-bin = final.callPackage ./pkgs/jupiter-dock-updater-bin { };
+
   steamdeck-theme = final.callPackage ./pkgs/steamdeck-theme { };
 
   sdgyrodsu = final.callPackage ./pkgs/sdgyrodsu { };
