@@ -24,6 +24,15 @@ in
     guestSupport = true;
   };
 
+  linuxPackages_jovian_6_0 = linuxPackagesFor final.linux_jovian_6_0;
+  linux_jovian_6_0 = super.callPackage ./pkgs/linux-jovian/6_0.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+      kernelPatches.export-rt-sched-migrate
+    ];
+  };
+
   mesa-jupiter = final.callPackage ./pkgs/mesa-jupiter { };
 
   xwayland-jupiter = final.callPackage ./pkgs/xwayland-jupiter { };
