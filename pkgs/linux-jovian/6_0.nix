@@ -56,7 +56,7 @@ buildLinux (args // rec {
     LTRF216A = module;
 
     # FIXME: Doesn't build
-    USB4 = no;
+    USB4_KUNIT_TEST = no;
 
     #
     # Fallout from the vendor-set options
