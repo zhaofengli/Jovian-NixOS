@@ -62,6 +62,7 @@ let
     # This is done by re-using the same slice name.
 
     systemd-run --user \
+      --collect \
       --slice="steam-session" \
       --unit=steam-session.mangoapp \
       --property=Restart=always \
@@ -72,6 +73,7 @@ let
 
     if test -r "$powerbuttonPath"; then
       systemd-run --user \
+        --collect \
         --slice="steam-session" \
         --unit=steam-session.power-button-handler \
         --property=Restart=always \
@@ -182,6 +184,7 @@ let
       --
 
       systemd-run --user
+        --collect
         --scope
         --slice="$SLICE"
 
