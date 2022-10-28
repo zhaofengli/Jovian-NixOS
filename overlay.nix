@@ -33,7 +33,7 @@ in
     ];
   };
 
-  mesa-jupiter = final.callPackage ./pkgs/mesa-jupiter { };
+  mesa-radv-jupiter = final.callPackage ./pkgs/mesa-radv-jupiter { };
 
   xwayland-jupiter = final.callPackage ./pkgs/xwayland-jupiter { };
   gamescope = super.gamescope.override {
