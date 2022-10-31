@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation {
   pname = "sdgyrodsu";
-  version = "1.14";
+  version = "unstable-2022-08-22";
 
   src = fetchFromGitHub {
     owner = "kmicki";
