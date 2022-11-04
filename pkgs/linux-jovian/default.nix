@@ -22,6 +22,18 @@ buildLinux (args // rec {
       name = "set-vm-max-map-count-to-some-giant-value";
       patch = ./max_map_count.patch;
     }
+    # Valve improperly fixed the issue.
+    {
+      name = "revert-pahole-workarounds";
+      patch = ./0001-revert-pahole-workarounds.patch;
+    }
+    # Instead we're backporting the changes from upstream.
+    #  - https://lore.kernel.org/all/20210712060952.148978306@linuxfoundation.org/
+    #  - https://lore.kernel.org/all/20220904131901.13025-1-jolsa@kernel.org/
+    {
+      name = "backport-5.15-pahole-fixes";
+      patch = ./0002-backport-5.15-pahole-fixes.patch;
+    }
   ];
 
   structuredExtraConfig = with lib.kernel; {
