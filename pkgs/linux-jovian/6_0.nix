@@ -8,9 +8,8 @@ let
     versions
   ;
 
-  kernelVersion = "6.0.0";
-  vendorVersion = "rc2-valve1";
-  rev = "f4174e400d1a571625f6bafc1f7866313b5223be";
+  kernelVersion = "6.0.6";
+  vendorVersion = "valve1";
 in
 buildLinux (args // rec {
   version = "${kernelVersion}-${vendorVersion}";
@@ -55,9 +54,6 @@ buildLinux (args // rec {
     # Enabling our ALS, only in jupiter branches at the moment
     LTRF216A = module;
 
-    # FIXME: Doesn't build
-    USB4_KUNIT_TEST = no;
-
     #
     # Fallout from the vendor-set options
     # -----------------------------------
@@ -68,7 +64,7 @@ buildLinux (args // rec {
   src = fetchFromGitHub {
     owner = "Jovian-Experiments";
     repo = "linux";
-    inherit rev;
-    hash = "sha256-5UONI2H5qQkNGTzQfApX7bozPs4GOdT04AlpFUfQsKg=";
+    rev = "${kernelVersion}-${vendorVersion}";
+    hash = "sha256-D2/vawtQ1q76pACv0cdxFqvu0yAYfq+SUO4WKwf7Cws=";
   };
 } // (args.argsOverride or { }))
