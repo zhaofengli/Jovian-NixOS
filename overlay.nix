@@ -58,6 +58,8 @@ in
 
   decky-loader = final.callPackage ./pkgs/decky-loader { };
 
+  opensd = super.callPackage ./pkgs/opensd { };
+
   steamPackages = super.steamPackages.overrideScope (scopeFinal: scopeSuper: {
     steam = final.callPackage ./pkgs/steam-jupiter/unwrapped.nix {
       steam-original = scopeSuper.steam;
