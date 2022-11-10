@@ -43,16 +43,20 @@ buildLinux (args // rec {
     # Works around issues with the touchscreen driver
     PINCTRL_AMD = yes;
 
-    JUPITER = module;
-    SND_SOC_CS35L41 = module;
-    SND_SOC_CS35L41_SPI = module;
-
     SND_SOC_AMD_ACP5x = module;
     SND_SOC_AMD_VANGOGH_MACH = module;
     SND_SOC_WM_ADSP = module;
+    SND_SOC_CS35L41 = module;
+    SND_SOC_CS35L41_SPI = module;
     SND_SOC_NAU8821 = module;
-    # Enabling our ALS, only in jupiter branches at the moment
+
+    # Enable Ambient Light Sensor
     LTRF216A = module;
+
+    # STEAMDECK modules are implicitly enabled (m)
+
+    HYPERVISOR_GUEST = lib.mkForce no;
+    KVM_GUEST = lib.mkForce (option no);
 
     #
     # Fallout from the vendor-set options
@@ -65,6 +69,6 @@ buildLinux (args // rec {
     owner = "Jovian-Experiments";
     repo = "linux";
     rev = "${kernelVersion}-${vendorVersion}";
-    hash = "sha256-D2/vawtQ1q76pACv0cdxFqvu0yAYfq+SUO4WKwf7Cws=";
+    hash = "sha256-bRlDDEIe0OHV1NrB7BxyGee/EDAOiH+KnytHIrH6W7k=";
   };
 } // (args.argsOverride or { }))
