@@ -26,7 +26,7 @@ in
       environment = {
         pathsToLink = [ "share/alsa/ucm2" ];
         variables.ALSA_CONFIG_UCM2 = "/run/current-system/sw/share/alsa/ucm2";
-        systemPackages = [ pkgs.jupiter-hw-support pkgs.alsa-lib ];
+        systemPackages = [ pkgs.jupiter-hw-support ];
       };
     }
 
