@@ -32,6 +32,10 @@ in
     ];
   };
 
+  mangohud = final.callPackage ./pkgs/mangohud {
+    inherit (super) mangohud;
+  };
+
   mesa-radv-jupiter = final.callPackage ./pkgs/mesa-radv-jupiter { };
 
   xwayland-jupiter = final.callPackage ./pkgs/xwayland-jupiter { };
