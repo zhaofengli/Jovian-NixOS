@@ -1,4 +1,4 @@
-{ lib, mangohud, fetchFromGitHub }:
+{ mangohud, fetchFromGitHub }:
 
 mangohud.overrideAttrs (old: {
   version = "unstable-2022-09-18";
