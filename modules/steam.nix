@@ -345,6 +345,9 @@ in
         # Enable horizontal mangoapp bar
         STEAM_MANGOAPP_HORIZONTAL_SUPPORTED = "1";
 
+        # Scaling support
+        STEAM_GAMESCOPE_FANCY_SCALING_SUPPORT = "1";
+
         STEAM_USE_DYNAMIC_VRS = "1";
 
         STEAM_UPDATEUI_PNG_BACKGROUND = "${steamdeck-hw-theme}/share/steamos/steamos.png";
