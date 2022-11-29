@@ -2,7 +2,7 @@
   description = "NixOS on Steam Deck";
 
   inputs = {
-    nixpkgs.url = "github:zhaofengli/nixpkgs/zhaofeng-22.11";
+    nixpkgs.url = "github:zhaofengli/nixpkgs/zhaofeng-23.05";
   };
 
   outputs = { self, nixpkgs }: let
