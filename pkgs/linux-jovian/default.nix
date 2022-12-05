@@ -55,6 +55,9 @@ buildLinux (args // rec {
     # Works around issues with the touchscreen driver
     PINCTRL_AMD = yes;
 
+    # Steam Deck force feedback support
+    STEAM_FF = yes;
+
     JUPITER = module;
     SND_SOC_CS35L41 = module;
     SND_SOC_CS35L41_SPI = module;
