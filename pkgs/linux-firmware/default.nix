@@ -4,9 +4,9 @@ linux-firmware.overrideAttrs(_: {
   src = fetchFromGitHub {
     owner = "Jovian-Experiments";
     repo = "linux-firmware";
-    rev = "jupiter-20220624";
-    hash = "sha256-v4yFQAyxmyur4/XAaW0nJKaApii/dvC++Er1Fg7yjy0=";
+    rev = "jupiter-20221209-rtw-debug";
+    hash = "sha256-TbEcgZgxv4BvEgNSM62tLYQVK1hakZ7Q62po+4HQ+Os=";
   };
 
-  outputHash = "sha256-7CNqA9hFqOopZjLv8DcHKMTWk0rQL8zxs7U6bbCO/TU=";
+  outputHash = "sha256-hblyEJP9Jitrgt7vMDq5sQigLSKuq32m8T3DwmVQDnQ=";
 })
