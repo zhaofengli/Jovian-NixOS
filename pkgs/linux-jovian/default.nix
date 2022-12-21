@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, buildLinux, guestSupport ? false, ... } @ args:
+{ lib, fetchFromGitHub, buildLinux, ... } @ args:
 
 let
   inherit (lib)
@@ -70,20 +70,19 @@ buildLinux (args // rec {
     # Enabling our ALS, only in jupiter branches at the moment
     LTRF216A = module;
 
-    #
-    # Fallout from the vendor-set options
-    # -----------------------------------
-    #
-    MOUSE_PS2_VMMOUSE = lib.mkForce (option no);
-  } // (if guestSupport then {} else {
     # PARAVIRT options have overhead, even on bare metal boots. They can cause
     # spinlocks to not be inlined as well. Either way, we don't intend to run this
     # kernel as a guest, so this also clears out a whole bunch of
     # virtualization-specific drivers.
     HYPERVISOR_GUEST = lib.mkForce no;
 
+    #
+    # Fallout from the vendor-set options
+    # -----------------------------------
+    #
     KVM_GUEST = lib.mkForce (option no);
-  });
+    MOUSE_PS2_VMMOUSE = lib.mkForce (option no);
+  };
 
   src = fetchFromGitHub {
     owner = "Jovian-Experiments";

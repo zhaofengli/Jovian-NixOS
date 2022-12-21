@@ -18,10 +18,6 @@ in
       kernelPatches.export-rt-sched-migrate
     ];
   };
-  linuxPackages_jovian_guest = linuxPackagesFor final.linux_jovian_guest;
-  linux_jovian_guest = final.linux_jovian.override {
-    guestSupport = true;
-  };
 
   linuxPackages_jovian_6_0 = linuxPackagesFor final.linux_jovian_6_0;
   linux_jovian_6_0 = super.callPackage ./pkgs/linux-jovian/6_0.nix {
