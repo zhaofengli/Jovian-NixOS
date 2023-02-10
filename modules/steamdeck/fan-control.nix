@@ -13,7 +13,7 @@ let
   cfg = config.jovian.devices.steamdeck;
 
   jupiter-fan-control = pkgs.jupiter-fan-control.override {
-    useNewHwmonName = config.boot.kernelPackages.kernel.meta.branch == "6.0";
+    useNewHwmonName = config.boot.kernelPackages.kernelAtLeast "6.0";
   };
 in
 {
