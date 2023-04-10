@@ -6,10 +6,10 @@
 }:
 
 let
-  version = "2.3.1-pre1";
+  version = "2.6.5-pre2";
   rev = "v${version}";
-  sha256 = "sha256-3++h+G1w8nzDQ58Fp9+qxdSXZiGQHGMcVMX3AxoAN/4=";
-  npmSha256 = "sha256-KVMicNdOS2GmAokBICLVOjP4bijQ6RdKP5Hn3eHHwd0=";
+  sha256 = "sha256-CRKPZ7FB8uTIV7gI0Xoohc1QQRRgECanAe+Tqd+vwDM=";
+  npmSha256 = "sha256-W/4nrRxIY+BQSZoh+zhgX63HR/sBFhdDRuPKWf+4yIk=";
 
   pythonEnv = python3.withPackages (py: with py; [
     aiohttp
