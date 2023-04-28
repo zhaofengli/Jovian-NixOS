@@ -375,6 +375,9 @@ in
         # Disable automatic audio device switching in steam, now handled by wireplumber
         STEAM_DISABLE_AUDIO_DEVICE_SWITCHING = "1";
 
+        # Let steam know it can unmount drives without superuser privileges
+        STEAM_ALLOW_DRIVE_UNMOUNT = "1";
+
         # Enable support for xwayland isolation per-game in Steam
         STEAM_MULTIPLE_XWAYLANDS = "1";
 
@@ -440,6 +443,9 @@ in
       jovian.steam.environment = {
         # Enable dynamic backlight, we have the kernel patch to disable events
         STEAM_ENABLE_DYNAMIC_BACKLIGHT = "1";
+
+        # Enabled fan control toggle in steam
+        STEAM_ENABLE_FAN_CONTROL = "1";
 
         # Let's try this across the board to see if it breaks anything
         # Helps performance in HZD, Cyberpunk, at least
