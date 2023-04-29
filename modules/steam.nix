@@ -420,9 +420,6 @@ in
         # Enable horizontal mangoapp bar
         STEAM_MANGOAPP_HORIZONTAL_SUPPORTED = "1";
 
-        # Scaling support
-        STEAM_GAMESCOPE_FANCY_SCALING_SUPPORT = "1";
-
         # Enable mangoapp overlay presets
         STEAM_MANGOAPP_PRESETS_SUPPORTED = "1";
 
