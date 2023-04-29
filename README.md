@@ -43,14 +43,18 @@ Then you can start the UI using one of the following methods:
 Firmware Updates
 ----------------
 
-### `steamdeck-firmware`
+### BIOS
 
-Updates to the BIOS and the controller are available in the `steamdeck-firmware` package:
+Run `sudo fwupdmgr update` to update the BIOS with fwupd.
+We [repackage](./pkgs/jupiter-hw-support/bios-fwupd.nix) the vendor update as a fwupd update package.
 
-- BIOS: Run `sudo jupiter-biosupdate`
-- Controller: Run `sudo jupiter-controller-update`
+Alternatively, the `steamdeck-firmware` package provides the original vendor updater as the `jupiter-biosupdate` command.
 
-### `jupiter-dock-updater-bin`
+### Controller
+
+Run `jupiter-controller-update` in the `steamdeck-firmware` package to update.
+
+### Docking Station
 
 Updates to the Docking Station firmware are available in the `jupiter-dock-updater-bin` package.
 Connect to the dock via USB-C and run `jupiter-dock-updater` to update.
