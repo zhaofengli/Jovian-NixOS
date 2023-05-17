@@ -1,13 +1,13 @@
 { fetchFromGitHub }:
 
 let
-  version = "20230424.1";
+  version = "20230516.1";
 in (fetchFromGitHub {
   name = "jupiter-hw-support-${version}";
   owner = "Jovian-Experiments";
   repo = "jupiter-hw-support";
-  rev = "jupiter-${version}";
-  sha256 = "sha256-NlAhfDL1bRy6qj3jM8hHiZOWlaLhi/Q0rdGbMpDDNQg=";
+  rev = "${version}";
+  sha256 = "sha256-g7yH+sdqVE25UslD/zKRV4vcqcq8IZhuy8/hFfmRpVU=";
 }) // {
   inherit version;
 }
