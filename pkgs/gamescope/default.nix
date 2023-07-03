@@ -6,12 +6,11 @@
 }:
 
 # NOTE: vendoring gamescope for the time being since we want to match the
-#       version shipped by the vendor, which does not work without the kernel
-#       version coherent with the version as shipped by the vendor.
+#       version shipped by the vendor, ensuring feature level is equivalent.
 
 let
-  version = "3.12.0-beta8";
-  hash = "sha256-/9NGlM1FaDfdFkyIjbbJ39GB5JkkIFeZXQwtCvFUuX4=";
+  version = "3.12.0-beta9";
+  hash = "sha256-nPFHMRp3uq2CIxY3EdaoTltqyb5z0kFwXw5U9ajbrfo=";
 in
 gamescope'.overrideAttrs({ buildInputs, ... }: {
   name = "gamescope-${version}";

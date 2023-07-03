@@ -19,15 +19,6 @@ rec {
     ];
   };
 
-  linuxPackages_jovian_6_0 = linuxPackagesFor final.linux_jovian_6_0;
-  linux_jovian_6_0 = super.callPackage ./pkgs/linux-jovian/6_0.nix {
-    kernelPatches = [
-      kernelPatches.bridge_stp_helper
-      kernelPatches.request_key_helper
-      kernelPatches.export-rt-sched-migrate
-    ];
-  };
-
   gamescope = final.callPackage ./pkgs/gamescope {
     gamescope' = super.gamescope;
   };
@@ -63,6 +54,9 @@ rec {
     };
     steam-fhsenv = final.callPackage ./pkgs/steam-jupiter/fhsenv.nix {
       steam-fhsenv = scopeSuper.steam-fhsenv;
+    };
+    steam-fhsenv-small = final.callPackage ./pkgs/steam-jupiter/fhsenv.nix {
+      steam-fhsenv = scopeSuper.steam-fhsenv-small;
     };
   });
 
