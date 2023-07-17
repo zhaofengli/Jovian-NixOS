@@ -2,28 +2,19 @@
 , stdenv
 , fetchFromGitHub
 , nodePackages
+, nodejs
 , python3
 }:
-
 let
-  version = "2.6.5-pre2";
-  rev = "v${version}";
-  sha256 = "sha256-CRKPZ7FB8uTIV7gI0Xoohc1QQRRgECanAe+Tqd+vwDM=";
-  npmSha256 = "sha256-W/4nrRxIY+BQSZoh+zhgX63HR/sBFhdDRuPKWf+4yIk=";
+  version = "2.10.3";
+  hash = "sha256-cgLnej/mO8ShzUBevGBF+a78VhQhudDvpmdwgRZ4Wm8=";
+  npmHash = "sha256-FyrFVHRCJX/PUGilLpiRaQwcDUO9edNWCvN/3ugVejQ=";
 
-  pythonEnv = python3.withPackages (py: with py; [
-    aiohttp
-    aiohttp-jinja2
-    aiohttp-cors
-    watchdog
-    certifi
-  ]);
-
-  src = fetchFromGitHub rec {
-    name = "decky-loader-${rev}";
+  src = fetchFromGitHub {
     owner = "SteamDeckHomebrew";
     repo = "decky-loader";
-    inherit rev sha256;
+    rev = "v${version}";
+    inherit hash;
   };
 
   frontendDeps = stdenv.mkDerivation {
@@ -39,7 +30,7 @@ let
 
       export SOURCE_DATE_EPOCH=1
       cd frontend
-      pnpm i --ignore-scripts --ignore-pnpmfile --frozen-lockfile
+      pnpm i --ignore-scripts --ignore-pnpmfile --frozen-lockfile --node-linker=hoisted
 
       runHook postBuild
     '';
@@ -57,14 +48,14 @@ let
 
     outputHashMode = "flat";
     outputHashAlgo = "sha256";
-    outputHash = npmSha256;
+    outputHash = npmHash;
   };
 
   frontend = stdenv.mkDerivation {
     pname = "decky-loader-frontend";
     inherit version src;
 
-    nativeBuildInputs = [ nodePackages.pnpm ];
+    nativeBuildInputs = [ nodejs nodePackages.pnpm ];
 
     dontConfigure = true;
 
@@ -73,7 +64,7 @@ let
 
       pushd frontend
       tar xf ${frontendDeps}
-      ls -lah node_modules/
+      patchShebangs --build node_modules
       pnpm build
       popd
 
@@ -88,6 +79,14 @@ let
       runHook postInstall
     '';
   };
+
+  pythonEnv = python3.withPackages (py: with py; [
+    aiohttp
+    aiohttp-jinja2
+    aiohttp-cors
+    watchdog
+    certifi
+  ]);
 
   loader = stdenv.mkDerivation {
     pname = "decky-loader";
@@ -109,12 +108,23 @@ let
       mkdir $out/bin
       cat << EOF >$out/bin/decky-loader
       #!/bin/sh
+      export PATH=${pythonEnv}/bin:$PATH
       exec ${pythonEnv}/bin/python3 $out/lib/decky-loader/main.py
       EOF
       chmod +x $out/bin/decky-loader
 
       runHook postInstall
     '';
-  };
 
+    passthru = {
+      inherit frontendDeps;
+    };
+
+    meta = with lib; {
+      description = "A plugin loader for the Steam Deck";
+      homepage = "https://github.com/SteamDeckHomebrew/decky-loader";
+      platforms = platforms.linux;
+      license = licenses.gpl2Only;
+    };
+  };
 in loader
