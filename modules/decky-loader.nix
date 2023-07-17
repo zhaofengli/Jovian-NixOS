@@ -74,7 +74,6 @@ in
           UNPRIVILEGED_USER = cfg.user;
           UNPRIVILEGED_PATH = cfg.stateDir;
           PLUGIN_PATH = "${cfg.stateDir}/plugins";
-          LOG_LEVEL = "DEBUG";
         };
 
         path = with pkgs; [ coreutils gawk ] ++ cfg.extraPackages;
@@ -86,7 +85,7 @@ in
 
         serviceConfig = {
           ExecStart = "${pkgs.decky-loader}/bin/decky-loader";
-          KillSignal = "SIGINT"; # smh
+          KillSignal = "SIGINT";
         };
       };
     }
