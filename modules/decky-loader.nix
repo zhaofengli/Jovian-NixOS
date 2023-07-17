@@ -19,10 +19,6 @@ in
           default = false;
           description = ''
             Whether to enable the Steam Deck Plugin Loader.
-
-            Currently this is very YMMV. Some of the plugins make
-            unsound assumption on the system (e.g., HOME being
-            /home/deck), and the loader itself requires root.
           '';
         };
 
