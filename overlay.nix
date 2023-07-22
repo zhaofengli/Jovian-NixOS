@@ -52,6 +52,8 @@ rec {
 
   opensd = super.callPackage ./pkgs/opensd { };
 
+  jovian-run-session = super.callPackage ./pkgs/jovian-run-session { };
+
   steamPackages = super.steamPackages.overrideScope (scopeFinal: scopeSuper: {
     steam = final.callPackage ./pkgs/steam-jupiter/unwrapped.nix {
       steam-original = scopeSuper.steam;
@@ -63,6 +65,4 @@ rec {
       steam-fhsenv = scopeSuper.steam-fhsenv-small;
     };
   });
-
-  tinydm-jovian = final.callPackage ./pkgs/tinydm-jovian { };
 }
