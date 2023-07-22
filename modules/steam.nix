@@ -498,7 +498,6 @@ in
           default_session = {
             user = "jovian-greeter";
             command = "${pkgs.jovian-greeter}/bin/jovian-greeter ${cfg.user} ${cfg.desktopSession}";
-            service = "jovian-greeter";
           };
         };
       };
@@ -510,10 +509,6 @@ in
       users.groups.jovian-greeter = {};
 
       security.pam.services = {
-        # Use a separate service to not result in a logind session for
-        # the greeter itself
-        jovian-greeter = {};
-
         greetd.text = ''
           auth      requisite     pam_nologin.so
           auth      sufficient    pam_succeed_if.so user = ${cfg.user} quiet_success
