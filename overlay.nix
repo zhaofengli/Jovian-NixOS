@@ -65,4 +65,6 @@ rec {
       steam-fhsenv = scopeSuper.steam-fhsenv-small;
     };
   });
+
+  sdgyrodsu = final.callPackage ./pkgs/sdgyrodsu { };
 }
