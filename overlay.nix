@@ -46,8 +46,6 @@ rec {
 
   steamdeck-theme = final.callPackage ./pkgs/steamdeck-theme { };
 
-  sdgyrodsu = final.callPackage ./pkgs/sdgyrodsu { };
-
   decky-loader = final.callPackage ./pkgs/decky-loader { };
 
   opensd = super.callPackage ./pkgs/opensd { };
