@@ -26,4 +26,4 @@ jobs:
             exit 0
           fi
 
-          nix run .#nodePackages.surge ./result jovian-book-${{ github.sha }}.surge.sh --token "${{ secrets.SURGE_TOKEN }}"
+          nix run .#nodePackages.surge -- ./result jovian-book-${{ github.sha }}.surge.sh --token "${{ secrets.SURGE_TOKEN }}"
