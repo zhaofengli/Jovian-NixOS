@@ -1,0 +1,29 @@
+name: Book
+on:
+  pull_request:
+  push:
+jobs:
+  book:
+    name: Deploy Book
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v4
+
+      - name: Setup automatic caching
+        uses: DeterminateSystems/magic-nix-cache-action@v2
+
+      - name: Build Book
+        run: |
+          nix build .#jovian-book -L -o result
+
+      - name: Deploy preview
+        run: |
+          if [[ -z "${{ secrets.SURGE_TOKEN }}" ]]; then
+            >&2 echo "No token available, skipping preview..."
+            exit 0
+          fi
+
+          nix run .#nodePackages.surge ./result jovian-book-${{ github.sha }}.surge.sh --token "${{ secrets.SURGE_TOKEN }}"
