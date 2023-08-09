@@ -2,6 +2,7 @@ final: super:
 
 let
   inherit (final)
+    lib
     kernelPatches
     linuxPackagesFor
   ;
@@ -65,4 +66,6 @@ rec {
   });
 
   sdgyrodsu = final.callPackage ./pkgs/sdgyrodsu { };
+
+  jovian-book = final.callPackage ./book { };
 }
