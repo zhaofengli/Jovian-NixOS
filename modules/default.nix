@@ -1,9 +1,8 @@
 {
   imports = [
-    ./decky-loader.nix
-    ./steamdeck
+    ./steamdeck/default.nix
     ./overlay.nix
-    ./steam.nix
+    ./steam/default.nix
     ./workarounds.nix
   ];
 }

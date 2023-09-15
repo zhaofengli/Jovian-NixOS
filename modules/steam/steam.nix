@@ -3,13 +3,14 @@
 let
   inherit (lib)
     makeBinPath
+    mapAttrsToList
     mkDefault
     mkIf
     mkMerge
     mkOption
-    mapAttrsToList
     types
   ;
+  cfg = config.jovian.steam;
 
   # Note that we override Steam in our overlay
   inherit (pkgs)
@@ -17,6 +18,7 @@ let
     mangohud
     bubblewrap
     systemd
+    networkmanager
 
     jupiter-hw-support
     steamdeck-hw-theme
@@ -44,11 +46,10 @@ let
       };
     };
 
-  cfg = config.jovian.steam;
-
   sessionPath = makeBinPath [
     mangohud
     systemd
+    networkmanager
     steam
     steam.run
   ];
@@ -126,7 +127,63 @@ let
       echo ""
     fi
 
-    exec steam -steamos3 -steampal -steamdeck -gamepadui "$@"
+    # Workaround for steam crashing leaving gamescope hanging around with broken XWaylands.
+    # Implemented as such, since we already need to review the whole gamescopoe startup
+    # process to imitate what Steam now does.
+    cleanup() {
+      (
+      PS4=" ⇒ "
+      echo ":: Cleaning up $1"
+      set -x
+      pkill -9 steam-session
+      )
+    }
+    at_exit() {
+      cleanup "at_exit"
+    }
+    at_sigint() {
+      cleanup "at_sigint"
+    }
+    at_sigterm() {
+      cleanup "at_sigterm"
+    }
+    # NOTE: this is to better track the causes.
+    trap at_exit EXIT
+    trap at_sigint SIGINT
+    trap at_sigterm SIGTERM
+
+    set -e
+
+    # OOBE handling.
+    # (See steam-jupiter.sh in steam-jupiter-oobe and steam-jupiter-stable)
+    # On first boot, we need to start whatever steam we have packaged, to
+    # allow the user to connect to the internet. We don't have the luxury
+    # that Steam's OOBE has to be heavy-handed. So instead we'll see if it
+    # looks like the user has never started steam. If it looks that way,
+    # we'll init OOBE, and otherwise undo it.
+    (
+      STEAM_LINKS="$HOME"/.steam
+      STEAM_DIR="$HOME"/.local/share/Steam
+      REGISTRY="$STEAM_LINKS"/registry.vdf
+
+      echo ":: Checking if we're offline, or in OOBE..."
+      if ! test -f "$REGISTRY" || [[ "$(nmcli networking connectivity check)" != full ]]; then
+        echo "   We are!!"
+        echo "   Disabling the updater..."
+        mkdir -pv "$STEAM_DIR"
+        printf '# OOBE Inhibit\nBootStrapperInhibitAll = enable' \
+          > "$STEAM_DIR"/Steam.cfg
+      else
+        echo "   We are not"
+        if grep '^# OOBE Inhibit' "$STEAM_DIR"/Steam.cfg; then
+          echo "   Deleting our own OOBE config."
+          rm -v "$STEAM_DIR"/Steam.cfg
+        fi
+      fi
+    )
+
+    steam -steamos3 -steampal -steamdeck -gamepadui "$@" &
+    wait
   '';
 
   # Shim that runs gamescope, with a specific environment.
@@ -263,47 +320,6 @@ in
   options = {
     jovian = {
       steam = {
-        enable = mkOption {
-          type = types.bool;
-          default = false;
-          description = lib.mdDoc ''
-            Whether to enable the Steam Deck UI.
-
-            When enabled, you can either launch the Steam Deck UI
-            from your Display Manager or by running `steam-session`.
-          '';
-        };
-
-        autoStart = mkOption {
-          type = types.bool;
-          default = false;
-          description = lib.mdDoc ''
-            Whether to automatically launch the Steam Deck UI on boot.
-
-            Traditional Display Managers cannot be enabled in conjunction with this option.
-          '';
-        };
-
-        user = mkOption {
-          type = types.nullOr types.str;
-          default = null;
-          description = lib.mdDoc ''
-            The user to run Steam with.
-          '';
-        };
-
-        desktopSession = mkOption {
-          type = types.nullOr types.str;
-          default = null;
-          example = "plasma";
-          description = lib.mdDoc ''
-            The session to launch for Desktop Mode.
-
-            By default, attempting to switch to the desktop will launch
-            Gaming Mode again.
-          '';
-        };
-
         environment = mkOption {
           type = types.attrsOf types.str;
           default = {};
@@ -331,7 +347,13 @@ in
       };
     };
   };
+
   config = mkIf cfg.enable (mkMerge [
+    {
+      warnings = []
+        ++ lib.optional (!config.networking.networkmanager.enable)
+          "The Steam Deck UI integrates with NetworkManager (networking.networkmanager.enable) which is not enabled. NetworkManager is required to complete the first-time setup process.";
+    }
     {
       security.wrappers.gamescope = {
         owner = "root";
@@ -349,10 +371,6 @@ in
       };
     }
     {
-      warnings = []
-        ++ lib.optional (!config.networking.networkmanager.enable)
-          "The Steam Deck UI integrates with NetworkManager (networking.networkmanager.enable) which is not enabled. NetworkManager is required to complete the first-time setup process.";
-
       hardware.opengl.driSupport32Bit = true;
       hardware.pulseaudio.support32Bit = true;
       hardware.steam-hardware.enable = mkDefault true;
@@ -409,9 +427,6 @@ in
         # We have the Mesa integration for the fifo-based dynamic fps-limiter
         STEAM_GAMESCOPE_DYNAMIC_FPSLIMITER = "1";
 
-        # We have gamma/degamma exponent support
-        STEAM_GAMESCOPE_COLOR_TOYS = "1";
-
         # We have NIS support
         STEAM_GAMESCOPE_NIS_SUPPORTED = "1";
 
@@ -432,6 +447,7 @@ in
 
         # Color management support
         STEAM_GAMESCOPE_COLOR_MANAGED = "1";
+        STEAM_GAMESCOPE_VIRTUAL_WHITE = "1";
 
         # Enable HDR support in steam
         STEAM_GAMESCOPE_HDR_SUPPORTED = "1";
@@ -483,86 +499,6 @@ in
         # Expose 8 physical cores, instead of 4c/8t
         WINE_CPU_TOPOLOGY = "8:0,1,2,3,4,5,6,7";
       };
-    })
-    (mkIf cfg.autoStart {
-      assertions = [
-        {
-          assertion = !config.systemd.services.display-manager.enable;
-          message = ''
-            Traditional Display Managers cannot be enabled when jovian.steam.autoStart is used
-
-            Hint: check `services.xserver.displaymanager.*.enable` options in your configuration.
-          '';
-        }
-      ];
-
-      warnings = lib.optional (cfg.desktopSession == null) ''
-        jovian.steam.desktopSession is unset.
-
-        This means that using the Switch to Desktop function in Gaming Mode will
-        relaunch Gaming Mode.
-
-        Set jovian.steam.desktopSession to the name of a desktop session, or "steam-wayland"
-        to keep this behavior.
-      '';
-
-      services.xserver = {
-        enable = true;
-        displayManager.lightdm.enable = false;
-        displayManager.startx.enable = true;
-      };
-
-      jovian.steam.environment = {
-        JOVIAN_DESKTOP_SESSION = if cfg.desktopSession != null then cfg.desktopSession else "steam-wayland";
-      };
-
-      services.greetd = {
-        enable = true;
-        settings = {
-          default_session = let
-          in {
-            user = "jovian-greeter";
-            command = "${pkgs.jovian-greeter}/bin/jovian-greeter ${cfg.user}";
-          };
-        };
-      };
-
-      users.users.jovian-greeter = {
-        isSystemUser = true;
-        group = "jovian-greeter";
-      };
-      users.groups.jovian-greeter = {};
-
-      security.pam.services = {
-        greetd.text = ''
-          auth      requisite     pam_nologin.so
-          auth      sufficient    pam_succeed_if.so user = ${cfg.user} quiet_success
-          auth      required      pam_unix.so
-
-          account   sufficient    pam_unix.so
-
-          password  required      pam_deny.so
-
-          session   optional      pam_keyinit.so revoke
-          session   include       login
-        '';
-      };
-
-      environment = {
-        systemPackages = [ pkgs.jovian-greeter.helper ];
-        pathsToLink = [ "lib/jovian-greeter" ];
-      };
-      security.polkit.extraConfig = ''
-        polkit.addRule(function(action, subject) {
-          if (
-            action.id == "org.freedesktop.policykit.exec" &&
-            action.lookup("program") == "/run/current-system/sw/lib/jovian-greeter/consume-session" &&
-            subject.user == "jovian-greeter"
-          ) {
-            return polkit.Result.YES;
-          }
-        });
-      '';
     })
   ]);
 }

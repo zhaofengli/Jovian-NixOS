@@ -17,6 +17,7 @@ in
     jovian.devices.steamdeck = {
       enableDefaultSysctlConfig = mkOption {
         default = cfg.enable;
+        defaultText = lib.literalExpression "config.jovian.devices.steamdeck.enable";
         type = types.bool;
         description = ''
           Whether to enable stock sysctl configs.
@@ -24,6 +25,7 @@ in
       };
       enableDefaultCmdlineConfig = mkOption {
         default = cfg.enable;
+        defaultText = lib.literalExpression "config.jovian.devices.steamdeck.enable";
         type = types.bool;
         description = ''
           Whether to enable stock kernel command line flags.
@@ -31,9 +33,20 @@ in
       };
       enableDefaultStage1Modules = mkOption {
         default = cfg.enable;
+        defaultText = lib.literalExpression "config.jovian.devices.steamdeck.enable";
         type = types.bool;
         description = ''
           Whether to enable essential kernel modules in initrd.
+        '';
+      };
+      enableProductSerialAccess = mkOption {
+        default = cfg.enable;
+        defaultText = lib.literalExpression "config.jovian.devices.steamdeck.enable";
+        type = types.bool;
+        description = lib.mdDoc ''
+          > Loosen the product_serial node to `440 / root:wheel`, rather than `400 / root:root`
+          > to allow the physical users to read S/N without auth.
+          — holo-dmi-rules 1.0
         '';
       };
     };
@@ -43,6 +56,11 @@ in
     (mkIf (cfg.enable) {
       # Firmware is required in stage-1 for early KMS.
       hardware.enableRedistributableFirmware = true;
+    })
+    (mkIf (cfg.enableProductSerialAccess) {
+      systemd.tmpfiles.rules = [
+        "z /sys/class/dmi/id/product_serial 440 root wheel - -"
+      ];
     })
     (mkIf (cfg.enableDefaultStage1Modules) {
       boot.initrd.kernelModules = [
