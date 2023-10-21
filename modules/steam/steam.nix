@@ -69,6 +69,8 @@ let
     # Activate MangoApp implicit layer
     export MANGOAPP=1
 
+    powerbuttonPath="/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+
     # Initially write no_display to our config file
     # so we don't get mangoapp showing up before Steam initializes
     # on OOBE and stuff.
@@ -88,22 +90,25 @@ let
       -- \
       mangoapp
 
-    ${lib.optionalString (cfg.powerButtonDevice != null) ''
-      handler=(
-        "${pkgs.jovian-power-button-handler}/bin/power-button-handler"
-        --device "${cfg.powerButtonDevice}"
-      )
-
-      if "''${handler[@]}" --check; then
-        systemd-run --user \
-          --collect \
-          --slice="steam-session" \
-          --unit=steam-session.power-button-handler \
-          --property=Restart=always \
-          -- \
-          steam-run "''${handler[@]}"
-      fi
-    ''}
+    if test -r "$powerbuttonPath"; then
+      systemd-run --user \
+        --collect \
+        --slice="steam-session" \
+        --unit=steam-session.power-button-handler \
+        --property=Restart=always \
+        -- \
+        steam-run ${jupiter-hw-support}/lib/hwsupport/power-button-handler.py
+    else
+      echo ""
+      echo ""
+      echo "================================================================================"
+      echo "[steam-session] WARNING: Power button device not readable by your user."
+      echo "                         Add $USER to the input group to have complete support"
+      echo "                         for the Steam Deck's power menu."
+      echo "================================================================================"
+      echo ""
+      echo ""
+    fi
 
     if [[ -z "$XDG_SESSION_TYPE" ]]; then
       # See start-gamescope-session in the gamescope package for SteamOS
@@ -320,16 +325,6 @@ in
           default = {};
           description = lib.mdDoc ''
             Environment variables to set for Steam.
-          '';
-        };
-
-        powerButtonDevice = mkOption {
-          type = types.nullOr types.str;
-          default = "isa0060/serio0/input0"; # Steam Deck
-          description = lib.mdDoc ''
-            The device that corresponds to the power button.
-
-            This is the PHYS attribute in udev.
           '';
         };
 
