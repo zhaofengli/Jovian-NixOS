@@ -1,13 +1,28 @@
-{ fetchFromGitHub }:
+{ 
+  applyPatches, 
+  fetchFromGitHub, 
+  substituteAll, 
+  jovian-steam-protocol-handler, 
+  systemd,
+}:
 
 let
-  version = "20230810.2";
-in (fetchFromGitHub {
-  name = "jupiter-hw-support-${version}";
-  owner = "Jovian-Experiments";
-  repo = "jupiter-hw-support";
-  rev = "jupiter-${version}";
-  hash = "sha256-/xlrMXcQT/l1qj40EUD1LlCT4iQ4okypxPh4S6zztTY=";
+  version = "20231005.2";
+in (applyPatches {
+  src = fetchFromGitHub {
+    owner = "Jovian-Experiments";
+    repo = "jupiter-hw-support";
+    rev = "jupiter-${version}";
+    hash = "sha256-whiAvol2ETfdBOkBDCtID2SgWAGjFCX/G9SCc0sCec0=";
+  };
+
+  patches = [
+    (substituteAll {
+      handler = jovian-steam-protocol-handler;
+      systemd = systemd;
+      src = ./jovian.patch;
+    })
+  ];
 }) // {
   inherit version;
 }
