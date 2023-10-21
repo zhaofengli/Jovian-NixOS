@@ -5,8 +5,15 @@ let
     kernelPatches
     linuxPackagesFor
   ;
+  linuxModulesOverlay = final: super: {
+    ayn-sensors = final.callPackage ./pkgs/ayn-sensors { };
+  };
 in
 rec {
+  linuxKernel = super.linuxKernel // {
+    packagesFor = kernel: (super.linuxKernel.packagesFor kernel).extend linuxModulesOverlay;
+  };
+
   linux-firmware = final.callPackage ./pkgs/linux-firmware {
     linux-firmware = super.linux-firmware;
   };
