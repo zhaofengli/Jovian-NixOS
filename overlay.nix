@@ -7,6 +7,7 @@ let
   ;
   linuxModulesOverlay = final: super: {
     ayn-sensors = final.callPackage ./pkgs/ayn-sensors { };
+    ryzen_smu = final.callPackage ./pkgs/ryzen_smu { };
   };
 in
 rec {
