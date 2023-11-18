@@ -10,12 +10,14 @@
   coreutils,
   dbus,
   findutils,
+  galileo-mura,
   gamescope,
   gnugrep,
   gnused,
   gnutar,
   ibus,
   mangohud,
+  plasma5Packages,
   powerbuttond,
   procps,
   steam_notif_daemon,
@@ -33,6 +35,7 @@ let
       coreutils
       dbus
       findutils
+      galileo-mura
       gnugrep
       gnused
       gnutar
@@ -72,9 +75,12 @@ let
       "$HOME/devkit-game/devkit-steam" = true;
     };
 
-    # Don't resholve gamescope so we can use the cap_sys_nice wrapper when available
     prologue = "${writeText "gamescope-session-prologue" ''
+      # Don't resholve gamescope so we can use the cap_sys_nice wrapper when available
       export PATH=/run/wrappers/bin:${gamescope}/bin:$PATH
+  
+      # Make gamescope discover the Steam cursor theme
+      export XCURSOR_PATH=${plasma5Packages.breeze-qt5}/share/icons:${steamdeck-hw-theme}/share/icons
     ''}";
   };
   start-gamescope-session-solution = {
@@ -92,13 +98,13 @@ let
   };
 in stdenv.mkDerivation(finalAttrs: {
   pname = "gamescope-session";
-  version = "3.12.6-1";
+  version = "3.13.5-1";
 
   src = fetchFromGitHub {
     owner = "Jovian-Experiments";
     repo = "PKGBUILDs-mirror";
     rev = "jupiter-main/gamescope-${finalAttrs.version}";
-    hash = "sha256-5LPqtSLZpfCMkTv5JgG4mK8M9yApSYivcTtNA/W03f8=";
+    hash = "sha256-mm+P27wpiu72IH+w7vm12sTKafbSJTkd+2PNipinhuE=";
   };
 
   patchPhase = ''
@@ -107,7 +113,7 @@ in stdenv.mkDerivation(finalAttrs: {
     patchShebangs steam-http-loader
 
     substituteInPlace gamescope-session \
-      --replace /usr/share/steamos ${steamdeck-hw-theme}/share/steamos \
+      --replace /usr/share ${steamdeck-hw-theme}/share \
       --replace /usr/lib/steam ${steamPackages.steam}/lib/steam
 
     substituteInPlace gamescope-session.service \

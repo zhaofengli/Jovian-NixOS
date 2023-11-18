@@ -1,13 +1,13 @@
 { callPackage, fetchFromGitHub, git, ... }@args:
 
 (callPackage ./upstream (removeAttrs args ["callPackage" "git"])).overrideAttrs (old: {
-  version = "0.7.0.r54";
+  version = "0.7.0.r68";
   src = fetchFromGitHub {
     owner = "flightlessmango";
     repo = "MangoHud";
 
-    rev = "9393066ef87c168a55fb0e2db3d002c55544fdd6";
-    hash = "sha256-WM3Z0l0rEVQ56GG0XhHu3/ao2K066GjIh25nn2QU+8A=";
+    rev = "ea725ed1d2000d5409e701dc770282b28e80d5e6";
+    hash = "sha256-ZvpAQsM7KV3fQLxNBzWNCYVSjR0ILESIgZq9AigiqGg=";
   };
 
   nativeBuildInputs = old.nativeBuildInputs ++ [ git ];
