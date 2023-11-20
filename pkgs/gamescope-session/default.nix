@@ -57,6 +57,7 @@ let
       "cannot:${steamPackages.steam-fhsenv}/bin/steam"
       "cannot:${util-linux}/bin/flock"
       "cannot:${xbindkeys}/bin/xbindkeys"
+      "cannot:${powerbuttond}/bin/powerbuttond"
     ];
     fake = {
       # we're using wrappers for these

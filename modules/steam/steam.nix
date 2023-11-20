@@ -5,11 +5,43 @@ let
     mkDefault
     mkIf
     mkMerge
+    mkOption
+    types
   ;
 
   cfg = config.jovian.steam;
+
+  gamescope-session = if cfg.useAlternativePowerButtonHandler then pkgs.gamescope-session.override {
+    powerbuttond = pkgs.writeShellScriptBin "powerbuttond" ''
+      exec ${pkgs.jovian-power-button-handler}/bin/power-button-handler \
+        --device "${cfg.powerButtonDevice}"
+    '';
+  } else pkgs.gamescope-session;
 in
 {
+  options = {
+    jovian.steam = {
+      useAlternativePowerButtonHandler = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to use an alternative implementation of the power button handler.
+
+          This is required to use alternative power button devices.
+        '';
+      };
+      powerButtonDevice = mkOption {
+        type = types.nullOr types.str;
+        default = "isa0060/serio0/input0";
+        description = ''
+          The PHYS attribute of the power button device.
+
+          This is only used when `useAlternativePowerButtonHandler` is true.
+        '';
+      };
+    };
+  };
+
   config = mkIf cfg.enable (mkMerge [
     {
       warnings = []
@@ -29,11 +61,11 @@ in
       hardware.pulseaudio.support32Bit = true;
       hardware.steam-hardware.enable = mkDefault true;
 
-      environment.systemPackages = [ pkgs.gamescope-session pkgs.steamos-polkit-helpers ];
+      environment.systemPackages = [ gamescope-session pkgs.steamos-polkit-helpers ];
 
-      systemd.packages = [ pkgs.gamescope-session ];
+      systemd.packages = [ gamescope-session ];
 
-      services.xserver.displayManager.sessionPackages = [ pkgs.gamescope-session ];
+      services.xserver.displayManager.sessionPackages = [ gamescope-session ];
 
       # Conflicts with power-button-handler
       services.logind.extraConfig = ''
