@@ -6,7 +6,7 @@ let
     linuxPackagesFor
   ;
   linuxModulesOverlay = final: super: {
-    ayn-sensors = final.callPackage ./pkgs/ayn-sensors { };
+    ayn-platform = final.callPackage ./pkgs/ayn-platform { };
     ryzen_smu = final.callPackage ./pkgs/ryzen_smu { };
   };
 in

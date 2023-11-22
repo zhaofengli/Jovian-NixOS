@@ -1,14 +1,14 @@
 { lib, stdenv, fetchFromGitHub, kernel, pahole }:
 
 stdenv.mkDerivation {
-  pname = "ayn-sensors";
-  version = "unstable-2023-08-23";
+  pname = "ayn-platform";
+  version = "unstable-2023-10-07";
 
   src = fetchFromGitHub {
     owner = "ShadowBlip";
     repo = "ayn-platform";
-    rev = "3fdfa48edf1046d507b9e62dfd246de9a31b10ac";
-    hash = "sha256-cgMfqd+cmsPg1rEbVBU0D7OO+bZg44HlXMgU8IeshzI=";
+    rev = "068cce29a7ef31f32b6aed3ca8ab9c1c91308e41";
+    hash = "sha256-759lG6OLe25lKiGAskl1+4w3ZuoDkFymnLjYahFlQ+k=";
   };
 
   buildInputs = [
@@ -20,8 +20,6 @@ stdenv.mkDerivation {
 
     make -C ${kernel.dev}/lib/modules/${kernel.modDirVersion}/build M=$PWD modules
 
-    ls -lah
-
     runHook postBuild
   '';
 
@@ -31,7 +29,7 @@ stdenv.mkDerivation {
     moddir="$out/lib/modules/${kernel.modDirVersion}"
     mkdir -p $moddir
 
-    install -m644 ayn-sensors.ko $moddir
+    install -m644 ayn-platform.ko $moddir
 
     runHook postInstall
   '';
