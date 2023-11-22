@@ -13,7 +13,7 @@ let
 
   gamescope-session = if cfg.useAlternativePowerButtonHandler then pkgs.gamescope-session.override {
     powerbuttond = pkgs.writeShellScriptBin "powerbuttond" ''
-      exec ${pkgs.jovian-power-button-handler}/bin/power-button-handler \
+      exec ${pkgs.steamPackages.steam-fhsenv.run}/bin/steam-run ${pkgs.jovian-power-button-handler}/bin/power-button-handler \
         --device "${cfg.powerButtonDevice}"
     '';
   } else pkgs.gamescope-session;
