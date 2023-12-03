@@ -1,17 +1,14 @@
 { gamescope'
-, fetchpatch
 , fetchFromGitHub
 , glm
 , gbenchmark
+, xorg
 }:
 
 # NOTE: vendoring gamescope for the time being since we want to match the
 #       version shipped by the vendor, ensuring feature level is equivalent.
 
 let
-  version = "3.13.5";
-  hash = "sha256-ITpUHE8VQKZOaCGHBdh0d40J5ejdG/ahv4V3o0KKMh4=";
-
   joshShaders = fetchFromGitHub {
     owner = "Joshua-Ashton";
     repo = "GamescopeShaders";
@@ -19,14 +16,15 @@ let
     hash = "sha256-gR1AeAHV/Kn4ntiEDUSPxASLMFusV6hgSGrTbMCBUZA=";
   };
 in
-gamescope'.overrideAttrs({ buildInputs, postPatch ? "", postInstall ? "", ... }: {
-  name = "gamescope-${version}";
+gamescope'.overrideAttrs(old: rec {
+  version = "3.13.12";
+
   src = fetchFromGitHub {
     owner = "ValveSoftware";
     repo = "gamescope";
     rev = "refs/tags/${version}";
     fetchSubmodules = true;
-    inherit hash;
+    hash = "sha256-z3bTtHMPFLUMSSOXxl8VNYIxh6zx6/gID5YTfRtu2qE=";
   };
 
   # Clobber unvendoring vkroots, nixpkgs version is too old
@@ -34,10 +32,6 @@ gamescope'.overrideAttrs({ buildInputs, postPatch ? "", postInstall ? "", ... }:
 
   # (We are purposefully clobbering the patches from Nixpkgs here)
   patches = [
-    (fetchpatch {
-      url = "https://raw.githubusercontent.com/NixOS/nixpkgs/770f6182ac3084eb9ed836e1f34fce0595c905db/pkgs/applications/window-managers/gamescope/use-pkgconfig.patch";
-      sha256 = "sha256-BqP20qoVH47xT/Pn4P9V5wUvHK/AJivam0Xenr8AbGk=";
-    })
     ./jovian.patch
   ];
 
@@ -47,12 +41,16 @@ gamescope'.overrideAttrs({ buildInputs, postPatch ? "", postInstall ? "", ... }:
     substituteInPlace src/reshade_effect_manager.cpp --replace "@out@" "$out"
   '';
 
-  buildInputs = buildInputs ++ [
+  buildInputs = old.buildInputs ++ [
     gbenchmark
     glm
+    xorg.xcbutilerrors
+    xorg.xcbutilwm
   ];
 
-  postInstall = postInstall + ''
+  mesonInstallFlags = ["--skip-subprojects"];
+
+  postInstall = old.postInstall + ''
     mkdir -p $out/share/gamescope/reshade
 	  cp -r ${joshShaders}/* $out/share/gamescope/reshade/
   '';
