@@ -64,13 +64,15 @@ in
       };
     }
     {
+      # Enable MTU probing, as vendor does
+      # See: https://github.com/ValveSoftware/SteamOS/issues/1006
+      # See also: https://www.reddit.com/r/SteamDeck/comments/ymqvbz/ubisoft_connect_connection_lost_stuck/j36kk4w/?context=3
+      boot.kernel.sysctl."net.ipv4.tcp_mtu_probing" = true;
+
       hardware.opengl = {
         driSupport32Bit = true;
-        extraPackages = [ pkgs.gamescope.lib ];
-        extraPackages32 = [ (pkgs.pkgsi686Linux.gamescope.overrideAttrs(old: {
-          mesonFlags = old.mesonFlags or [] ++ ["-Denable_gamescope=false"];
-          postInstall = null;
-        })).lib ];
+        extraPackages = [ pkgs.gamescope-wsi ];
+        extraPackages32 = [ pkgs.pkgsi686Linux.gamescope-wsi ];
       };
 
       hardware.pulseaudio.support32Bit = true;
@@ -82,10 +84,14 @@ in
 
       services.xserver.displayManager.sessionPackages = [ gamescope-session ];
 
-      # Conflicts with power-button-handler
+      # Conflicts with powerbuttond
       services.logind.extraConfig = ''
         HandlePowerKey=ignore
       '';
+
+      services.udev.packages = [
+        pkgs.powerbuttond
+      ];
 
       # This rule allows the user to configure Wi-Fi in Deck UI.
       #
