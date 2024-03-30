@@ -8,13 +8,13 @@
 
 stdenv.mkDerivation rec {
   pname = "jupiter-hw-support-source";
-  version = "20240116.1";
+  version = "20240313.1";
 
   src = fetchFromGitHub {
     owner = "Jovian-Experiments";
     repo = "jupiter-hw-support";
     rev = "jupiter-${version}";
-    hash = "sha256-CXbSq7LfWgXapD7zhJ5oLG+Cp3zh4HFwdx8oZ7bv9TY=";
+    hash = "sha256-cRALn61/Wa2nD4W3q7Bm+rYeZAWp2T7aB8mifupN1pk=";
   };
 
   patches = [
@@ -23,6 +23,8 @@ stdenv.mkDerivation rec {
       systemd = systemd;
       src = ./jovian.patch;
     })
+    # Fix controller updates with python-hid >= 1.0.6
+    ./hid-1.0.6.patch
   ];
 
   installPhase = ''

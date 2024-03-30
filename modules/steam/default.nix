@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ lib, ... }:
 
 let
   inherit (lib)
@@ -10,6 +10,7 @@ in
   imports = [
     ./steam.nix
     ./autostart.nix
+    ./environment.nix
   ];
   options = {
     jovian = {

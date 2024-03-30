@@ -31,7 +31,8 @@ rec {
 
   gamescope = import ./pkgs/gamescope {
     gamescope' = super.gamescope;
-    fetchFromGitHub = super.fetchFromGitHub;
+    fetchFromGitHub = final.fetchFromGitHub;
+    cmake = final.cmake;
   };
   gamescope-wsi = gamescope.override {
     enableExecutable = false;
@@ -45,11 +46,8 @@ rec {
     inherit (final.python3Packages) mako;
   };
 
-  mesa-radv-jupiter = final.callPackage ./pkgs/mesa-radv-jupiter {
-    # Compat with the inputs from Nixpkgs; those are for Darwin.
-    OpenGL = null;
-    Xplugin = null;
-  };
+  mesa-radeonsi-jupiter = final.callPackage ./pkgs/mesa-radeonsi-jupiter {};
+  mesa-radv-jupiter = final.callPackage ./pkgs/mesa-radv-jupiter {};
 
   jupiter-fan-control = final.callPackage ./pkgs/jupiter-fan-control { };
   powerbuttond = final.callPackage ./pkgs/powerbuttond { };
@@ -97,7 +95,7 @@ rec {
 
   jovian-hardware-survey = final.callPackage ./pkgs/jovian-hardware-survey { };
 
-  steamPackages = super.steamPackages.overrideScope (scopeFinal: scopeSuper: {
+  steamPackages = super.steamPackages.overrideScope (_: scopeSuper: {
     steam = final.callPackage ./pkgs/steam-jupiter/unwrapped.nix {
       steam-original = scopeSuper.steam;
     };
@@ -115,5 +113,6 @@ rec {
 
   sdgyrodsu = final.callPackage ./pkgs/sdgyrodsu { };
 
-  decky-loader = final.callPackage ./pkgs/decky-loader { };
+  decky-loader = final.callPackage ./pkgs/decky-loader/stable.nix { };
+  decky-loader-prerelease = final.callPackage ./pkgs/decky-loader/prerelease.nix { };
 }

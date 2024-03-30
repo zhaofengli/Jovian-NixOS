@@ -9,6 +9,7 @@
 , f3
 , findutils
 , gawk
+, gnugrep
 , gnused
 , jq
 , parted
@@ -30,6 +31,7 @@ let
       f3
       findutils
       gawk
+      gnugrep
       gnused
       jq
       parted
@@ -46,8 +48,10 @@ let
       "cannot:${systemd}/bin/systemctl"
       "cannot:${systemd}/bin/udevadm"
       "cannot:${util-linux}/bin/flock"
+      "cannot:${util-linux}/bin/setpriv"
 
       "cannot:${placeholder "out"}/lib/hwsupport/format-device.sh"
+      "cannot:${placeholder "out"}/lib/hwsupport/steamos-automount.sh"
     ];
     fake = {
       # we're using wrappers for these
@@ -55,11 +59,13 @@ let
     };
     fix = {
       "/usr/lib/hwsupport/format-device.sh" = true;
+      "/usr/lib/hwsupport/steamos-automount.sh" = true;
     };
     keep = {
       # pre-applied via patch
       # FIXME: why do we need to discard string context here?
       "${builtins.unsafeDiscardStringContext "${systemd}/bin/systemd-run"}" = true;
+      "source:${placeholder "out"}/lib/hwsupport/common-functions" = true;
     };
   };
 in
@@ -80,6 +86,9 @@ stdenv.mkDerivation {
 
     mkdir -p $out/lib
     cp -r usr/lib/hwsupport $out/lib
+
+    substituteInPlace $out/lib/hwsupport/* \
+      --replace-warn ". /usr/lib/hwsupport" ". $out/lib/hwsupport"
 
     ${resholve.phraseSolution "jupiter-hw-support" solution}
 

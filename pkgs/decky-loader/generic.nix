@@ -1,17 +1,13 @@
+{ version, hash, npmHash }:
 { lib
 , stdenv
 , fetchFromGitHub
-, fetchpatch
 , nodePackages
 , nodejs
 , cacert
 , python3
 }:
 let
-  version = "2.10.10";
-  hash = "sha256-FY2vSEgkaF9vGyt0VxtofAViifMbJlM9bfI+c7rX82c=";
-  npmHash = "sha256-4AC+mza7ya3wqVQYUe+wT311BT21aLHcBDBkpCxc3ZU=";
-
   src = fetchFromGitHub {
     owner = "SteamDeckHomebrew";
     repo = "decky-loader";

@@ -1,10 +1,10 @@
-{ lib, fetchFromGitHub, buildLinux, ... } @ args:
+{ lib, fetchFromGitHub, fetchpatch, buildLinux, ... } @ args:
 
 let
   inherit (lib) versions;
 
   kernelVersion = "6.1.52";
-  vendorVersion = "valve15";
+  vendorVersion = "valve19";
 in
 buildLinux (args // rec {
   version = "${kernelVersion}-${vendorVersion}";
@@ -12,7 +12,17 @@ buildLinux (args // rec {
   # branchVersion needs to be x.y
   extraMeta.branch = versions.majorMinor version;
 
-  kernelPatches = (args.kernelPatches or []) ++ [];
+  kernelPatches = (args.kernelPatches or []) ++ [
+    {
+      # Enable all Bluetooth LE PHYs by default
+      # See comment in https://github.com/Jovian-Experiments/PKGBUILDs-mirror/blob/d594fbf6bea8f0bace6dafca1799632579cd772b/PKGBUILD
+      name = "enable-all-ble-phys";
+      patch = fetchpatch {
+        url = "https://github.com/Jovian-Experiments/linux/commit/288c90224eec55d13e786844b7954ef060752089.patch";
+        hash = "sha256-iDEZBowNsfeECzM6AWVOGBKurbEGSiWWa9PQIV6kVVY=";
+      };
+    }
+  ];
 
   structuredExtraConfig = with lib.kernel; {
     #
@@ -112,6 +122,7 @@ buildLinux (args // rec {
     # kernel as a guest, so this also clears out a whole bunch of
     # virtualization-specific drivers.
     HYPERVISOR_GUEST = lib.mkForce no;
+    PARAVIRT_TIME_ACCOUNTING = lib.mkForce (option no);
 
     # Disable some options enabled in ArchLinux 6.1.12-arch1 config
     X86_AMD_PSTATE = lib.mkForce no;
@@ -142,7 +153,7 @@ buildLinux (args // rec {
     owner = "Jovian-Experiments";
     repo = "linux";
     rev = version;
-    hash = "sha256-6ZIKYeJDou1uZ7huKHDVRwEMYIQCvzFvgVWfmU0B0oI=";
+    hash = "sha256-uS/0RAaZt99EA3mn6Vso0kAGrqvnJovNEc1nfPLdey8=";
 
     # Sometimes the vendor doesn't update the EXTRAVERSION tag.
     # Let's fix it up in post.
