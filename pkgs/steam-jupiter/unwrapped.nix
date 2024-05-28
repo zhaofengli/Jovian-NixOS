@@ -6,13 +6,16 @@
 { steam-original, fetchurl }:
 
 let
+  version = "1.0.0.79-1.1";
   bundle = fetchurl {
-    url = "https://steamdeck-packages.steamos.cloud/archlinux-mirror/sources/jupiter-main/steam-jupiter-stable-1.0.0.78-1.2.src.tar.gz";
-    hash = "sha256-mgCdDDPyIs/LbqUcbiN/sDCPFSE2XXJIFIZBVgwl358=";
+    url = "https://steamdeck-packages.steamos.cloud/archlinux-mirror/sources/jupiter-main/steam-jupiter-stable-${version}.src.tar.gz";
+    hash = "sha256-izCFnX4Qk2M+jNtT3urGQoNbVGEN3v0SU3LfTWqS3ho=";
   };
 
 in steam-original.overrideAttrs (old: {
   pname = "steam-jupiter-original";
+  inherit version;
+
   postInstall = (old.postInstall or "") + ''
     >&2 echo ":: Injecting Steam Deck client bootstrap..."
     tar xvf ${bundle}

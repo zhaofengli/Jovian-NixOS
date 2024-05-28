@@ -39,15 +39,11 @@ in
       pulse.enable = true;
       alsa.enable = true;
       configPackages = [ pkgs.steamdeck-dsp ];
-      wireplumber = {
-        package = pkgs.wireplumber-jovian;
-        configPackages = [ pkgs.steamdeck-dsp ];
-      };
+      wireplumber.package = pkgs.wireplumber-jupiter;
+      wireplumber.configPackages = [ pkgs.steamdeck-dsp ];
     };
 
     environment.variables = extraEnv;
-
-    systemd.packages = [ pkgs.steamdeck-dsp ];
 
     systemd.services.pipewire.environment = lib.mkIf systemWide extraEnv;
     systemd.user.services.pipewire.environment = lib.mkIf (!systemWide) extraEnv;
@@ -55,9 +51,29 @@ in
     systemd.services.wireplumber.environment = lib.mkIf systemWide extraEnv;
     systemd.user.services.wireplumber.environment = lib.mkIf (!systemWide) extraEnv;
 
-    systemd.services.wireplumber-sysconf = {
-      wantedBy = ["multi-user.target"];
+    # These are copied from upstream steamdeck-dsp because upstream
+    # has terrible systemd ordering.
+    systemd.services.pipewire-sysconf = {
+      description = "Hardware Specific Pipewire Configuration";
+      unitConfig.ConditionPathIsDirectory = "/run";
       before = ["display-manager.service"];
+      wantedBy = ["multi-user.target"];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${pkgs.steamdeck-dsp}/share/pipewire/hardware-profiles/pipewire-hwconfig";
+      };
+    };
+    systemd.services.wireplumber-sysconf = {
+      description = "Hardware Specific Wireplumber Configuration";
+      unitConfig.ConditionPathIsDirectory = "/run";
+      before = ["display-manager.service"];
+      wantedBy = ["multi-user.target"];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${pkgs.steamdeck-dsp}/share/wireplumber/hardware-profiles/wireplumber-hwconfig";
+      };
     };
   };
 }

@@ -31,8 +31,7 @@ rec {
 
   gamescope = import ./pkgs/gamescope {
     gamescope' = super.gamescope;
-    fetchFromGitHub = final.fetchFromGitHub;
-    cmake = final.cmake;
+    inherit (final) fetchFromGitHub;
   };
   gamescope-wsi = gamescope.override {
     enableExecutable = false;
@@ -52,6 +51,7 @@ rec {
   jupiter-fan-control = final.callPackage ./pkgs/jupiter-fan-control { };
   powerbuttond = final.callPackage ./pkgs/powerbuttond { };
   steam_notif_daemon = final.callPackage ./pkgs/steam_notif_daemon { };
+  wakehook = final.callPackage ./pkgs/wakehook { };
 
   jupiter-hw-support = final.callPackage ./pkgs/jupiter-hw-support { };
   steamdeck-hw-theme = final.callPackage ./pkgs/jupiter-hw-support/theme.nix { };
@@ -61,6 +61,10 @@ rec {
   jupiter-dock-updater-bin = final.callPackage ./pkgs/jupiter-dock-updater-bin { };
   steamos-polkit-helpers = final.callPackage ./pkgs/jupiter-hw-support/polkit-helpers.nix { };
   steamdeck-dsp = final.callPackage ./pkgs/steamdeck-dsp { };
+  wireplumber-jupiter = import ./pkgs/wireplumber {
+    wireplumber' = super.wireplumber;
+    inherit (final) fetchFromGitHub;
+  };
 
   steamdeck-theme = final.callPackage ./pkgs/steamdeck-theme { };
 
@@ -106,10 +110,6 @@ rec {
       steam-fhsenv = scopeSuper.steam-fhsenv-small;
     };
   });
-
-  wireplumber-jovian = final.callPackage ./pkgs/wireplumber { 
-    wireplumber' = super.wireplumber;
-  };
 
   sdgyrodsu = final.callPackage ./pkgs/sdgyrodsu { };
 

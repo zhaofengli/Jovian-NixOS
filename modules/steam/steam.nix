@@ -64,6 +64,9 @@ in
       };
     }
     {
+      # Enable the usual desktop Steam stuff
+      programs.steam.enable = mkDefault true;
+
       # Enable MTU probing, as vendor does
       # See: https://github.com/ValveSoftware/SteamOS/issues/1006
       # See also: https://www.reddit.com/r/SteamDeck/comments/ymqvbz/ubisoft_connect_connection_lost_stuck/j36kk4w/?context=3
@@ -82,7 +85,17 @@ in
 
       systemd.packages = [ gamescope-session ];
 
-      services.xserver.displayManager.sessionPackages = [ gamescope-session ];
+      # Vendor patch: https://raw.githubusercontent.com/Jovian-Experiments/PKGBUILDs-mirror/cdaeca26642d59fc9109e98ac9ce2efe5261df1b/0001-Add-systemd-service.patch
+      systemd.user.services.wakehook = {
+        wantedBy = ["gamescope-session.service"];
+        after = ["gamescope-session.service"];
+        serviceConfig = {
+          ExecStart = lib.getExe pkgs.wakehook;
+          Restart = "always";
+        };
+      };
+
+      services.displayManager.sessionPackages = [ pkgs.gamescope-session ];
 
       # Conflicts with powerbuttond
       services.logind.extraConfig = ''

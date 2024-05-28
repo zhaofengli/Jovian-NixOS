@@ -41,6 +41,7 @@ let
       gnutar
       ibus
       mangohud
+      plasma5Packages.kconfig
       powerbuttond
       procps
       steam_notif_daemon
@@ -51,6 +52,7 @@ let
     ];
     execer = [
       "cannot:${ibus}/bin/ibus-daemon"
+      "cannot:${plasma5Packages.kconfig}/bin/kwriteconfig5"
       "cannot:${steamos-polkit-helpers}/bin/steamos-polkit-helpers/steamos-poweroff-now"
       "cannot:${steamos-polkit-helpers}/bin/steamos-polkit-helpers/steamos-reboot-now"
       "cannot:${steamos-polkit-helpers}/bin/steamos-polkit-helpers/steamos-retrigger-automounts"
@@ -103,13 +105,13 @@ let
   };
 in stdenv.mkDerivation(finalAttrs: {
   pname = "gamescope-session";
-  version = "3.14.1-1";
+  version = "3.14.18-1";
 
   src = fetchFromGitHub {
     owner = "Jovian-Experiments";
     repo = "PKGBUILDs-mirror";
     rev = "jupiter-main/gamescope-${finalAttrs.version}";
-    hash = "sha256-vBwCiTEOqF08PFcVxLrcNsDq/Ak150DmvcAVrMT6PsM=";
+    hash = "sha256-TjHARZQH4eGtwN3EJ9pJIR4LH7QdASAEUavBGggbXrw=";
   };
 
   patches = [

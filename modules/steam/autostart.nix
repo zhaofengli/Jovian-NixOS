@@ -17,7 +17,7 @@ in
         autoStart = mkOption {
           type = types.bool;
           default = false;
-          description = lib.mdDoc ''
+          description = ''
             Whether to automatically launch the Steam Deck UI on boot.
 
             Traditional Display Managers cannot be enabled in conjunction with this option.
@@ -26,7 +26,7 @@ in
 
         user = mkOption {
           type = types.str;
-          description = lib.mdDoc ''
+          description = ''
             The user to run Steam with.
           '';
         };
@@ -34,16 +34,16 @@ in
         desktopSession = mkOption {
           type = with types ; nullOr str // {         
             check = userProvidedDesktopSession:
-              lib.assertMsg (userProvidedDesktopSession != null -> (str.check userProvidedDesktopSession && lib.elem userProvidedDesktopSession config.services.xserver.displayManager.sessionData.sessionNames)) ''
+              lib.assertMsg (userProvidedDesktopSession != null -> (str.check userProvidedDesktopSession && lib.elem userProvidedDesktopSession config.services.displayManager.sessionData.sessionNames)) ''
                   Desktop session '${userProvidedDesktopSession}' not found.
                   Valid values for 'jovian.steam.desktopSession' are:
-                    ${lib.concatStringsSep "\n  " config.services.xserver.displayManager.sessionData.sessionNames}
+                    ${lib.concatStringsSep "\n  " config.services.displayManager.sessionData.sessionNames}
                   If you don't want a desktop session to switch to, set 'jovian.steam.desktopSession' to 'gamescope-wayland'.
               '';
           };
           default = null;
           example = "plasma";
-          description = lib.mdDoc ''
+          description = ''
             The session to launch for Desktop Mode.
 
             By default, attempting to switch to the desktop will launch Gaming Mode again.
@@ -61,7 +61,7 @@ in
           message = ''
             Traditional Display Managers cannot be enabled when jovian.steam.autoStart is used
 
-            Hint: check `services.xserver.displaymanager.*.enable` options in your configuration.
+            Hint: check `services.displayManager.*.enable` options in your configuration.
           '';
         }
       ];
@@ -76,11 +76,7 @@ in
         to keep this behavior.
       '';
 
-      services.xserver = {
-        enable = true;
-        displayManager.lightdm.enable = false;
-        displayManager.startx.enable = true;
-      };
+      services.displayManager.enable = true;
 
       systemd.user.services.gamescope-session = {
         overrideStrategy = "asDropin";
@@ -120,17 +116,15 @@ in
         enable = true;
         settings = {
           default_session = {
-            user = "jovian-greeter";
+            user = "root";
             command = "${pkgs.jovian-greeter}/bin/jovian-greeter ${cfg.user}";
           };
         };
+        greeterManagesPlymouth = true;
       };
 
-      users.users.jovian-greeter = {
-        isSystemUser = true;
-        group = "jovian-greeter";
-      };
-      users.groups.jovian-greeter = {};
+      # We handle this ourselves in the greeter
+      systemd.services.plymouth-quit.enable = false;
 
       security.pam.services = {
         greetd.text = ''
