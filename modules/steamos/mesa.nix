@@ -45,15 +45,15 @@ in
   config = lib.mkMerge [
     # Jupiter Gamescope + radeonsi patches
     (lib.mkIf (cfg.enableMesaPatches) {
-      hardware.opengl.package = pkgs.mesa-radeonsi-jupiter.drivers;
-      hardware.opengl.package32 = pkgs.pkgsi686Linux.mesa-radeonsi-jupiter.drivers;
+      hardware.graphics.package = pkgs.mesa-radeonsi-jupiter.drivers;
+      hardware.graphics.package32 = pkgs.pkgsi686Linux.mesa-radeonsi-jupiter.drivers;
     })
 
     # Jupiter RADV
     (lib.mkIf (cfg.enableVendorRadv) {
-      hardware.opengl = {
-        extraPackages = [ (lib.hiPrio pkgs.mesa-radv-jupiter.drivers) ];
-        extraPackages32 = [ (lib.hiPrio pkgs.pkgsi686Linux.mesa-radv-jupiter.drivers) ];
+      hardware.graphics = {
+        extraPackages = [ (lib.hiPrio pkgs.mesa-radv-jupiter) ];
+        extraPackages32 = [ (lib.hiPrio pkgs.pkgsi686Linux.mesa-radv-jupiter) ];
       };
 
       environment.etc."drirc".source = pkgs.mesa-radv-jupiter + "/share/drirc.d/00-radv-defaults.conf";

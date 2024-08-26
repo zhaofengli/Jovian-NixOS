@@ -8,13 +8,13 @@
 
 stdenv.mkDerivation rec {
   pname = "jupiter-hw-support-source";
-  version = "20240524.2";
+  version = "20240624.1";
 
   src = fetchFromGitHub {
     owner = "Jovian-Experiments";
     repo = "jupiter-hw-support";
     rev = "jupiter-${version}";
-    hash = "sha256-JBgyn+b5rYEYaPUMic3POI4jn78xfahZvE5HfnY5vsM=";
+    hash = "sha256-G0N1iWquhj93x9QCy8U68TM380FWPc6uJZtrExdBQaY=";
   };
 
   patches = [

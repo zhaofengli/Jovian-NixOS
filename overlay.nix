@@ -39,12 +39,6 @@ rec {
   };
   gamescope-session = final.callPackage ./pkgs/gamescope-session { };
 
-  mangohud = final.callPackage ./pkgs/mangohud {
-    libXNVCtrl = linuxPackages_jovian.nvidia_x11.settings.libXNVCtrl;
-    mangohud32 = final.pkgsi686Linux.mangohud;
-    inherit (final.python3Packages) mako;
-  };
-
   mesa-radeonsi-jupiter = final.callPackage ./pkgs/mesa-radeonsi-jupiter {};
   mesa-radv-jupiter = final.callPackage ./pkgs/mesa-radv-jupiter {};
 
@@ -59,12 +53,9 @@ rec {
   steamdeck-bios-fwupd = final.callPackage ./pkgs/jupiter-hw-support/bios-fwupd.nix { };
 
   jupiter-dock-updater-bin = final.callPackage ./pkgs/jupiter-dock-updater-bin { };
+  steamos-manager = final.callPackage ./pkgs/steamos-manager { };
   steamos-polkit-helpers = final.callPackage ./pkgs/jupiter-hw-support/polkit-helpers.nix { };
   steamdeck-dsp = final.callPackage ./pkgs/steamdeck-dsp { };
-  wireplumber-jupiter = import ./pkgs/wireplumber {
-    wireplumber' = super.wireplumber;
-    inherit (final) fetchFromGitHub;
-  };
 
   steamdeck-theme = final.callPackage ./pkgs/steamdeck-theme { };
 

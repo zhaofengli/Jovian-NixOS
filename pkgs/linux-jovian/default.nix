@@ -4,7 +4,8 @@ let
   inherit (lib) versions;
 
   kernelVersion = "6.5.0";
-  vendorVersion = "valve7";
+  vendorVersion = "valve19";
+  hash = "sha256-Ext0jZcE7JnMiLhrkVliw+izUSTmbbemmF4Xm2nOJMA=";
 in
 buildLinux (args // rec {
   version = "${kernelVersion}-${vendorVersion}";
@@ -132,6 +133,9 @@ buildLinux (args // rec {
     # Disable simple-framebuffer to fix logo regression
     SYSFB_SIMPLEFB = lib.mkForce no;
 
+    # Disable call depth tracking speculative execution vulnerability mitigation
+    CALL_DEPTH_TRACKING = no;
+
     # Jovian: fix fallout from the vendor-set options
     DRM_AMD_DC_SI = lib.mkForce (option no);
     DRM_AMD_DC_DCN = lib.mkForce (option no);
@@ -146,7 +150,7 @@ buildLinux (args // rec {
     owner = "Jovian-Experiments";
     repo = "linux";
     rev = version;
-    hash = "sha256-9vhCgaBYmzCZlBx2H+HZr7bTX7tG1bGH7Dy1j1usmhQ=";
+    inherit hash;
 
     # Sometimes the vendor doesn't update the EXTRAVERSION tag.
     # Let's fix it up in post.

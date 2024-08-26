@@ -72,8 +72,8 @@ in
       # See also: https://www.reddit.com/r/SteamDeck/comments/ymqvbz/ubisoft_connect_connection_lost_stuck/j36kk4w/?context=3
       boot.kernel.sysctl."net.ipv4.tcp_mtu_probing" = true;
 
-      hardware.opengl = {
-        driSupport32Bit = true;
+      hardware.graphics = {
+        enable32Bit = true;
         extraPackages = [ pkgs.gamescope-wsi ];
         extraPackages32 = [ pkgs.pkgsi686Linux.gamescope-wsi ];
       };
@@ -81,9 +81,9 @@ in
       hardware.pulseaudio.support32Bit = true;
       hardware.steam-hardware.enable = mkDefault true;
 
-      environment.systemPackages = [ gamescope-session pkgs.steamos-polkit-helpers ];
+      environment.systemPackages = [ pkgs.gamescope-session pkgs.steamos-polkit-helpers pkgs.steamos-manager ];
 
-      systemd.packages = [ gamescope-session ];
+      systemd.packages = [ pkgs.gamescope-session pkgs.steamos-manager ];
 
       # Vendor patch: https://raw.githubusercontent.com/Jovian-Experiments/PKGBUILDs-mirror/cdaeca26642d59fc9109e98ac9ce2efe5261df1b/0001-Add-systemd-service.patch
       systemd.user.services.wakehook = {
@@ -94,6 +94,13 @@ in
           Restart = "always";
         };
       };
+
+      systemd.user.services.steamos-manager = {
+        overrideStrategy = "asDropin";
+        wantedBy = [ "gamescope-session.service" ];
+      };
+
+      services.dbus.packages = [ pkgs.steamos-manager ];
 
       services.displayManager.sessionPackages = [ pkgs.gamescope-session ];
 
