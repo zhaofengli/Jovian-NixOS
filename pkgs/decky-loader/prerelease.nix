@@ -17,6 +17,6 @@ decky-loader.overridePythonAttrs rec {
   pnpmDeps = pnpm.fetchDeps {
     inherit pname version src;
     sourceRoot = "${src.name}/frontend";
-    hash = "sha256-MoYNX8jyITR26bfFPYRTsWxILw+LUtmAp714Ch0aYJQ=";
+    hash = "sha256-l4AA3xOdouk08i9n0lWbzeKCTqEkXC0BOsW1uxQMPyo=";
   };
 }
