@@ -1,0 +1,15 @@
+name: Module No-Op
+on:
+  pull_request:
+  push:
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v4
+
+      - name: Verify module is a No-Op
+        run: nix-instantiate ./support/nix-tests/check-no-ops.nix
