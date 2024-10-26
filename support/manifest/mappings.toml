@@ -211,15 +211,15 @@ linux-neptune.ignore = true
 # old kernel
 linux-neptune-61.ignore = true
 
-# new kernel
-linux-neptune-65 = { map = "linux_jovian", pkgrel = 1 }
+# old kernel
+linux-neptune-65.ignore = true
 
 # debug kernels
 linux-neptune-65-kasan.ignore = true
 linux-neptune-rtw-debug.ignore = true
 
-# too new kernel
-linux-neptune-68.ignore = true
+# new kernel
+linux-neptune-68 = { map = "linux_jovian", pkgrel = 1 }
 
 # we don't identify as SteamOS
 lsb-release.ignore = true
