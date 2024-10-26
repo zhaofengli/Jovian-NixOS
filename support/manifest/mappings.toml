@@ -288,7 +288,7 @@ renderdoc-minimal.ignore = true
 rtl88x2ce-dkms.ignore = true
 
 # not used yet
-scx-scheds.check = "1.0.3.linux.neptune.68-7"
+scx-scheds.check = "1.0.5.linux.neptune.68-1"
 
 # big mess, our SDDM is much newer
 sddm-wayland.ignore = true
