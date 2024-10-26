@@ -3,9 +3,9 @@
 let
   inherit (lib) versions;
 
-  kernelVersion = "6.5.0";
-  vendorVersion = "valve21";
-  hash = "sha256-V6iXXc8ip6eVAAkjdbR+3r+u+WlrfslxlaI5Y51acbc=";
+  kernelVersion = "6.8.12";
+  vendorVersion = "valve3";
+  hash = "sha256-1OZW12gZXLHTvpsaFGAi6WSSr+a51QYNhOsIWpLFwqk=";
 in
 buildLinux (args // rec {
   version = "${kernelVersion}-${vendorVersion}";
@@ -46,8 +46,6 @@ buildLinux (args // rec {
     SND_SOC_WM_ADSP = module;
     SND_SOC_CS35L41 = module;
     SND_SOC_CS35L41_SPI = module;
-    # Jovian: Vendor fragment disables the option, forced enabled by actual kernel config.
-    # SND_SOC_CS35L41_I2C = no;
     SND_SOC_NAU8821 = module;
     SND_SOC_MAX98388 = module;
 
@@ -132,6 +130,9 @@ buildLinux (args // rec {
 
     # Disable simple-framebuffer to fix logo regression
     SYSFB_SIMPLEFB = lib.mkForce no;
+
+    # Enable Extensible Scheduling Class
+    SCHED_CLASS_EXT = yes;
 
     # Disable call depth tracking speculative execution vulnerability mitigation
     CALL_DEPTH_TRACKING = no;
