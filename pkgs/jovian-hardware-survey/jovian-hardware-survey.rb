@@ -128,7 +128,10 @@ module ReportData
   end
 
   def is_steam_deck?()
-    system_information["Product Name"] == "Jupiter"
+    [
+      "Jupiter",
+      "Galileo",
+    ].include?(system_information["Product Name"])
   end
 
   FIELDS = [
