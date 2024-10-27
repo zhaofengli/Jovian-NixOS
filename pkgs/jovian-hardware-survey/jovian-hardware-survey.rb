@@ -345,6 +345,8 @@ module ReportData
     ram_chip_size = memory_information["Devices"][0]["Size"].split(/\s+/, 2)[0].to_i
 
     [
+      "Product Name:         #{system_information["Product Name"]}",
+      "System Family:        #{system_information["Family"]}",
       "Serial:               #{system_information["Serial Number"]}",
       "Manufacturing year:   #{manufacturing_information["Year"]}",
       "Manufacturing week:   #{manufacturing_information["Week"]}",
