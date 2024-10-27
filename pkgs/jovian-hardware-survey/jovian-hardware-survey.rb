@@ -207,7 +207,14 @@ module ReportData
   end
 
   def processor_information()
-    dmi_info["Processor"]["data"]
+    dmi_info["Processor"]["data"].tap do
+      # Convert flags into a Hash, for converting into a JSON Object.
+      _1["Flags"] = _1["Flags"].split("\n").map do |line|
+        data = line.match(%r{^([^\s]+)\s+\((.*)\)$})
+        [data[1], data[2]]
+      end
+        .to_h
+    end
   end
 
   def memory_information()
