@@ -214,6 +214,8 @@ module ReportData
         [data[1], data[2]]
       end
         .to_h
+      # Convert characteristics into an array
+      _1["Characteristics"] = _1["Characteristics"].split("\n")
     end
   end
 
