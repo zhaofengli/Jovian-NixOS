@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
->&2 echo "[JOVIAN] $0: stub called with: $*"
+>&2 printf "[JOVIAN] %s: stub called with: %s\n" "${0##*/}" "$(printf "%q " "$@")"
 
 if [ "$*" == "-t 11" ]; then
-    >&2 echo "[JOVIAN] $0: replying with cached data"
+    >&2 echo "[JOVIAN] ${0##*/}: replying with cached data"
     cat /run/jovian/dmidecode-11.txt
     exit 0
 fi
 
->&2 echo "[JOVIAN] $0: don't know how to handle $*"
+>&2 printf "[JOVIAN] %s: don't know how to handle: %s\n" "${0##*/}" "$(printf "%q " "$@")"
 exit 1
