@@ -17,6 +17,7 @@ in
       splash = mkOption {
         type = types.enum [
           "steamos"
+          "jovian"
           "vendor"
         ];
         default = "steamos";
@@ -24,6 +25,8 @@ in
           Configures the source of the splash screen used by the updater (preloader) step when launching Steam.
 
           When `steamos`, this will use the vendor-selected image, scaled appropriately.
+
+          When `jovian`, this will use the Jovian Experiments logo, scaled appropriately.
 
           When `vendor`, the vendor default will not be changed. This differs from `default` in that
           on systems other than the Steam Deck, the scaling may not be correct.
@@ -61,6 +64,9 @@ in
             fi
 
             jovian_updater_logo="$ui_background"
+          ''}
+          ${optionalString (cfg.updater.splash == "jovian") ''
+            jovian_updater_logo="${../../artwork/logo/splash.png}"
           ''}
 
           ${pkgs.jovian-updater-logo-helper}/bin/jovian-updater-logo-helper "$jovian_updater_logo" "/run/jovian/steam-splash.png"
