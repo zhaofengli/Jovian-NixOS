@@ -183,6 +183,16 @@ class Context:
 
         return None
 
+def handle_exception(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+
+    logging.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+    sys.exit(1)
+
+sys.excepthook = handle_exception
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     logging.root.handlers = [
