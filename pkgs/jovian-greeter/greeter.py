@@ -93,6 +93,8 @@ class GreetdClient:
         # greetd before 0.9.0 doesn't support env
         command_with_env = [ 'systemd-cat', '--identifier=jovian-session', '--', '/usr/bin/env' ] + environment + command
 
+        logging.info("Starting session '%s'", DEFAULT_SESSION)
+        logging.info("Command: %s", command_with_env)
         self._send({
             'type': 'start_session',
             'cmd': command_with_env,
