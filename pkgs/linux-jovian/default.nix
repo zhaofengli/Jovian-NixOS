@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, buildLinux, ... } @ args:
+{ lib, fetchFromGitHub, buildLinux, fetchpatch, ... } @ args:
 
 let
   inherit (lib) versions;
@@ -9,6 +9,22 @@ let
 in
 buildLinux (args // rec {
   version = "${kernelVersion}-${vendorVersion}";
+
+  kernelPatches = (args.kernelPatches or []) ++ [
+    {
+      name = "revert-bluetooth-mgmt-quectel.diff";
+      # The patch originally intended to make bluez aware of its own flag changes.
+      # Bluez now is aware of its own changes starting with bluez 5.78
+      #   - https://github.com/bluez/bluez/commit/9cc587947b6ac56a4c94dcc880b273bc72af22a8
+      # Without reverting this change, Bluez 5.78+ gets into a loop setting flags.
+      # See: https://github.com/Jovian-Experiments/Jovian-NixOS/issues/441
+      patch = fetchpatch {
+        url = "https://github.com/Jovian-Experiments/linux/commit/3ea1541efc91116181ec4abcebd62810df7aff33.patch";
+        hash = "sha256-RYDnJGz349VVZ3YWpDfPb3aSLH2noAnn2xFDqHW26DQ=";
+        revert = true;
+      };
+    }
+  ];
 
   # branchVersion needs to be x.y
   extraMeta.branch = versions.majorMinor version;
