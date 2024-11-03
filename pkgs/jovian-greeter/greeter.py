@@ -90,14 +90,14 @@ class GreetdClient:
         except Exception as ex:
             logging.debug("Failed to stop Plymouth", exc_info=ex)
 
-        # greetd before 0.9.0 doesn't support env
-        command_with_env = [ 'systemd-cat', '--identifier=jovian-session', '--', '/usr/bin/env' ] + environment + command
+        command = [ 'systemd-cat', '--identifier=jovian-session', '--' ] + command
 
         logging.info("Starting session '%s'", DEFAULT_SESSION)
-        logging.info("Command: %s", command_with_env)
+        logging.info("Command: %s", command)
+        logging.info("Environment: %s", environment)
         self._send({
             'type': 'start_session',
-            'cmd': command_with_env,
+            'cmd': command,
             'env': environment,
         })
         response = self._recv()
