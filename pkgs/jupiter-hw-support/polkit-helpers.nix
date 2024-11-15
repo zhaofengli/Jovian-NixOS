@@ -4,7 +4,6 @@
   resholve,
   bash,
   coreutils,
-  dmidecode,
   gawk,
   gnugrep,
   jovian-stubs,
@@ -23,7 +22,6 @@ let
     interpreter = "${bash}/bin/bash";
     inputs = [
       coreutils
-      dmidecode
       gawk
       gnugrep
       "${jupiter-dock-updater-bin}/lib/jupiter-dock-updater"
@@ -40,6 +38,7 @@ let
       "cannot:${jovian-stubs}/bin/steamos-factory-reset-config"
       "cannot:${jovian-stubs}/bin/steamos-select-branch"
       "cannot:${jovian-stubs}/bin/steamos-update"
+      "cannot:${jovian-stubs}/bin/dmidecode"
       "cannot:${jupiter-dock-updater-bin}/lib/jupiter-dock-updater/jupiter-dock-updater.sh"
       "cannot:${jupiter-hw-support}/bin/jupiter-check-support"
       "cannot:${jupiter-hw-support}/lib/hwsupport/format-device.sh"
@@ -80,7 +79,7 @@ in stdenv.mkDerivation {
   patchPhase = ''
     runHook prePatch
   
-    substituteInPlace usr/share/polkit-1/actions/org.valve.steamos.policy --replace /usr $out
+    substituteInPlace usr/share/polkit-1/actions/org.valve.steamos.policy --replace-fail /usr $out
 
     runHook postPatch
   '';

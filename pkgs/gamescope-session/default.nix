@@ -5,7 +5,8 @@
   fetchFromGitHub,
   python3,
   steamdeck-hw-theme,
-  steamPackages,
+  steam,
+  steam-unwrapped,
   bash,
   coreutils,
   dbus,
@@ -46,7 +47,7 @@ let
       procps
       steam_notif_daemon
       "${steamos-polkit-helpers}/bin/steamos-polkit-helpers"
-      steamPackages.steam-fhsenv
+      steam
       util-linux
       xbindkeys
     ];
@@ -56,7 +57,7 @@ let
       "cannot:${steamos-polkit-helpers}/bin/steamos-polkit-helpers/steamos-poweroff-now"
       "cannot:${steamos-polkit-helpers}/bin/steamos-polkit-helpers/steamos-reboot-now"
       "cannot:${steamos-polkit-helpers}/bin/steamos-polkit-helpers/steamos-retrigger-automounts"
-      "cannot:${steamPackages.steam-fhsenv}/bin/steam"
+      "cannot:${steam}/bin/steam"
       "cannot:${util-linux}/bin/flock"
       "cannot:${xbindkeys}/bin/xbindkeys"
       "cannot:${powerbuttond}/bin/powerbuttond"
@@ -84,7 +85,8 @@ let
 
     prologue = "${writeText "gamescope-session-prologue" ''
       # Don't resholve gamescope so we can use the cap_sys_nice wrapper when available
-      export PATH=/run/wrappers/bin:${gamescope}/bin:$PATH
+      # mangohud is not picked up by resholve due to loop_background
+      export PATH=/run/wrappers/bin:${gamescope}/bin:${mangohud}/bin:$PATH
   
       # Make gamescope discover the Steam cursor theme
       export XCURSOR_PATH=${plasma5Packages.breeze-qt5}/share/icons:${steamdeck-hw-theme}/share/icons
@@ -105,13 +107,13 @@ let
   };
 in stdenv.mkDerivation(finalAttrs: {
   pname = "gamescope-session";
-  version = "3.15.1-1";
+  version = "3.15.14-1";
 
   src = fetchFromGitHub {
     owner = "Jovian-Experiments";
     repo = "PKGBUILDs-mirror";
     rev = "jupiter-main/gamescope-${finalAttrs.version}";
-    hash = "sha256-4t32Zm1EyAB5KBQRwRQCsVkjbpyuohkybWw/0S2/dus=";
+    hash = "sha256-cVE54niHg9VO9m3/7e1mUTSEnWaNaN5HwkTaWbNucMY=";
   };
 
   patches = [
@@ -121,9 +123,11 @@ in stdenv.mkDerivation(finalAttrs: {
   postPatch = ''
     patchShebangs steam-http-loader
 
+    # The powerbuttond stuff should be handled by resholve, but currently isn't
     substituteInPlace gamescope-session \
       --replace /usr/share ${steamdeck-hw-theme}/share \
-      --replace /usr/lib/steam ${steamPackages.steam}/lib/steam
+      --replace /usr/lib/steam ${steam-unwrapped}/lib/steam \
+      --replace /usr/lib/hwsupport/powerbuttond ${powerbuttond}/bin/powerbuttond
 
     substituteInPlace gamescope-session.service \
       --replace /usr/bin $out/bin

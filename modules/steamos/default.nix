@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 
 let
   inherit (lib)
@@ -8,6 +8,7 @@ let
 in
 {
   imports = [
+    ./automount.nix
     ./bluetooth.nix
     ./boot.nix
     ./mesa.nix
@@ -18,7 +19,8 @@ in
     jovian.steamos = {
       useSteamOSConfig = mkOption {
         type = types.bool;
-        default = true;
+        default = config.jovian.steam.enable;
+        defaultText = "config.jovian.steam.enable";
         description = ''
           Whether to enable opinionated system configuration from SteamOS.
 

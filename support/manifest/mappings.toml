@@ -29,15 +29,18 @@
 alsa-ucm-conf.check = "1.2.9-1.2"
 
 # Valve A/B stuff
-atomupd-daemon-git.ignore = true
+atomupd-daemon.ignore = true
 
 # FIXME: has some not-yet-upstream patches, maybe we want them in nixpkgs?
-bluez.check = "5.76-2.2"
+bluez.check = "5.77-1.3"
 
 # more A/B stuff
 bmap-tools.ignore = true
 
 breakpad = { map = true, pkgrel = 1, fixup = "v" }
+
+# backports
+bubblewrap.check = "0.10.0-1.1"
 
 # Installer???
 calamares.ignore = true
@@ -50,7 +53,7 @@ casync.ignore = true
 ckbcomp.ignore = true
 
 # just disables tests
-clang.check = "16.0.6-2.1"
+clang.check = "16.0.6-2.2"
 
 # we don't enable this anywhere in the first place
 ddcutil.ignore = true
@@ -59,7 +62,7 @@ ddcutil.ignore = true
 debos-git.ignore = true
 
 # backports
-discover.check = "5.27.10.1-1.1"
+discover.check = "5.27.10.1-1.2"
 
 # we don't need this
 dkms.ignore = true
@@ -85,7 +88,7 @@ f3.ignore = true
 filesystem.ignore = true
 
 # security backports we already have
-flatpak.check = "1:1.15.6-2.1"
+flatpak.check = "1:1.15.10-1.1"
 
 # FIXME: some internal Valve thing, investigate?
 foxnet.ignore = true
@@ -147,18 +150,18 @@ ibus-pinyin.ignore = true
 ibus-table-cangjie-lite.ignore = true
 
 # backport from newer version than what we have
-iwd.check = "2.14-1.1"
+iwd.check = "2.14-1.3"
 
 jupiter-dock-updater-bin = { map = true, pkgrel = 1 }
 
-jupiter-fan-control = { map = true, pkgrel = 1 }
+jupiter-fan-control = { map = true, pkgrel = 2 }
 
 # we have our own, better one
 jupiter-firewall.ignore = true
 
 jupiter-hw-support = { map = ["jupiter-hw-support", "steamdeck-hw-theme", "steamdeck-firmware", "steamos-polkit-helpers"], pkgrel = 1 }
 
-jupiter-legacy-support.check = "1.148-1"
+jupiter-legacy-support.check = "1.149-1"
 
 # devkit stuff
 jupiter-resolved-nomdns.ignore = true
@@ -178,7 +181,7 @@ kmod.check = "30-1.6"
 
 # backports
 kpmcore.check = "23.04.2-2.1"
-kwin.check = "5.27.10-3"
+kwin.check = "5.27.10-4"
 
 # security backports
 less.check = "1:643-1.1"
@@ -197,7 +200,7 @@ libversion.ignore = true
 # some mainline kernel build
 linux.ignore = true
 
-linux-firmware-neptune = { map = "linux-firmware-jupiter", pkgrel = 1 }
+linux-firmware-neptune = { map = "linux-firmware-jupiter", pkgrel = 2 }
 
 # some other mainline kernel build
 linux-lts.ignore = true
@@ -208,15 +211,15 @@ linux-neptune.ignore = true
 # old kernel
 linux-neptune-61.ignore = true
 
-# new kernel
-linux-neptune-65 = { map = "linux_jovian", pkgrel = 1 }
+# old kernel
+linux-neptune-65.ignore = true
 
 # debug kernels
 linux-neptune-65-kasan.ignore = true
 linux-neptune-rtw-debug.ignore = true
 
-# too new kernel
-linux-neptune-68.ignore = true
+# new kernel
+linux-neptune-68 = { map = "linux_jovian", pkgrel = 1 }
 
 # we don't identify as SteamOS
 lsb-release.ignore = true
@@ -225,12 +228,12 @@ lsb-release.ignore = true
 maliit-keyboard.check = "2.3.1-2.1"
 
 # nixpkgs is ahead currently
-mangohud.check = "0.7.2.rc3.r11.g31f2ca5-2"
+mangohud.check = "0.7.2.rc3.r11.g31f2ca5-2.2"
 
 # we take upstream patches and apply on top of our mesa
-mesa.check = "24.0.5.183659.radeonsi_24.0.3-1"
+mesa.check = "24.0.5.183660.radeonsi_24.0.4-1"
 
-mesa-radv = { map = "mesa-radv-jupiter", pkgrel = "1.1", fixup = "mesa" }
+mesa-radv = { map = "mesa-radv-jupiter", pkgrel = "1", fixup = "mesa" }
 
 # some old test thing
 mesa-unstable.ignore = true
@@ -240,7 +243,7 @@ neptune-ctl.ignore = true
 
 # we don't actually apply any of this, but it's worth checking
 # FIXME?
-networkmanager.check = "1.44.2-3.3"
+networkmanager.check = "1.44.2-3.4"
 
 # security backports, nixpkgs has latest
 openssh.check = "9.6p1-3.1"
@@ -250,7 +253,7 @@ pacman-contrib.ignore = true
 paru.ignore = true
 
 # we ship a newer version, but patches may be valuable
-pipewire.check = "1:1.0.3-3"
+pipewire.check = "1:1.0.3-3.1"
 
 # a bunch of tweaks
 # FIXME: do we want this?
@@ -284,13 +287,16 @@ renderdoc-minimal.ignore = true
 # unused
 rtl88x2ce-dkms.ignore = true
 
+# not used yet
+scx-scheds.check = "1.0.5.linux.neptune.68-1"
+
 # big mess, our SDDM is much newer
 sddm-wayland.ignore = true
 
 # FIXME: package this
 steam-im-modules.ignore = true
 
-steam-jupiter-stable.map = "steamPackages.steam"
+steam-jupiter-stable.map = "steam-unwrapped"
 
 # we don't use this
 steam-jupiter-oobe.ignore = true
@@ -306,12 +312,12 @@ steamdeck-kde-presets.ignore = true
 steamfs-git.ignore = true
 
 # more A/B stuff
-steamos-atomupd-client-git.ignore = true
+steamos-atomupd-client.ignore = true
 
 # applied as NixOS modules instead
 # check both to make sure we get the latest changes
-steamos-customizations-git.check = "20240821.1-1"
-steamos-customizations-jupiter.check = "20240821.1-2"
+steamos-customizations-git.check = "20241030.1-1"
+steamos-customizations-jupiter.check = "20241030.1-1"
 
 # devkit stuff
 steamos-devkit-service.ignore = true
@@ -346,7 +352,7 @@ steamos-systemreport.ignore = true
 steamos-tweak-mtu-probing.check = "1-1"
 
 # SteamOS A/B specific patch
-systemd.check = "255.3-1.1"
+systemd.check = "255.3-1.2"
 
 # lul
 ttf-twemoji-default.ignore = true
@@ -355,7 +361,7 @@ ttf-twemoji-default.ignore = true
 umr.ignore = true
 
 # just disables tests, but may have stuff later
-upower.check = "0.99.15.jupiter-1.1"
+upower.check = "0.99.15.jupiter-1.2"
 
 # non-critical but would be nice to have
 # FIXME: package these
@@ -371,13 +377,13 @@ vpower.ignore = true
 wakehook = { map = true, pkgrel = 2 }
 
 # we use upstream but check the versions
-wayland = { map = true, pkgrel = 1 }
+wayland = { map = true, pkgrel = 2 }
 wayland-protocols = { map = true, pkgrel = 1 }
 
 # dependency of pipewire
 webrtc-audio-processing-1.ignore = true
 
-wireplumber.check = "0.5.3-1.2"
+wireplumber.check = "0.5.5-1.2"
 
 # ours is newer
 xdg-desktop-portal-gtk.ignore = true

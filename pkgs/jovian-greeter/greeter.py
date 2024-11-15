@@ -90,12 +90,14 @@ class GreetdClient:
         except Exception as ex:
             logging.debug("Failed to stop Plymouth", exc_info=ex)
 
-        # greetd before 0.9.0 doesn't support env
-        command_with_env = [ 'systemd-cat', '--identifier=jovian-session', '--', '/usr/bin/env' ] + environment + command
+        command = [ 'systemd-cat', '--identifier=jovian-session', '--' ] + command
 
+        logging.info("Starting session '%s'", DEFAULT_SESSION)
+        logging.info("Command: %s", command)
+        logging.info("Environment: %s", environment)
         self._send({
             'type': 'start_session',
-            'cmd': command_with_env,
+            'cmd': command,
             'env': environment,
         })
         response = self._recv()
@@ -181,8 +183,18 @@ class Context:
 
         return None
 
+def handle_exception(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+
+    logging.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+    sys.exit(1)
+
+sys.excepthook = handle_exception
+
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     logging.root.handlers = [
         JournalHandler(SYSLOG_IDENTIFIER="jovian-greeter")
     ]
@@ -213,7 +225,7 @@ if __name__ == '__main__':
         logging.error('No sessions found')
         sys.exit(1)
 
-    logging.debug(f'Found {session.TYPE} session')
+    logging.info(f'Found {session.TYPE} session')
     command = session.get_command()
     environment = session.get_environment()
 
