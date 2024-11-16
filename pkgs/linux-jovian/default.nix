@@ -161,6 +161,8 @@ buildLinux (args // rec {
     DRM_VMWGFX_FBCON = lib.mkForce (option no);
     KVM_GUEST = lib.mkForce (option no);
     MOUSE_PS2_VMMOUSE = lib.mkForce (option no);
+    INTEL_TDX_GUEST = lib.mkForce (option no);
+    TDX_GUEST_DRIVER = lib.mkForce (option no);
   };
 
   src = fetchFromGitHub {
