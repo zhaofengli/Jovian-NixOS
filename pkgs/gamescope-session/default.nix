@@ -117,6 +117,7 @@ in stdenv.mkDerivation(finalAttrs: {
 
   patches = [
     ./0001-gamescope-session-Add-xdg-environment-overrides.patch
+    ./0002-start-gamescope-session-do-not-set-XDG_DESKTOP_PORTA.patch
   ];
 
   postPatch = ''
