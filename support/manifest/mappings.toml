@@ -141,7 +141,7 @@ jupiter-firewall.ignore = true
 
 jupiter-hw-support = { map = ["jupiter-hw-support", "steamdeck-hw-theme", "steamdeck-firmware", "steamos-polkit-helpers"], pkgrel = 1 }
 
-jupiter-legacy-support.check = "1.150-1"
+jupiter-legacy-support.check = "1.151-1"
 
 # devkit stuff
 jupiter-resolved-nomdns.ignore = true
@@ -207,6 +207,9 @@ mesa-radv = { map = "mesa-radv-jupiter", pkgrel = "1", fixup = "mesa" }
 
 # some old test thing
 mesa-unstable.ignore = true
+
+# FIXME: ???
+mpg123.check = "1.32.9-1"
 
 # some other old test thing
 neptune-ctl.ignore = true
