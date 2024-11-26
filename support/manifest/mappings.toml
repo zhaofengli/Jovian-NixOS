@@ -26,21 +26,18 @@
 
 [packages]
 # we use our own upstream version
-alsa-ucm-conf.check = "1.2.9-1.2"
+alsa-ucm-conf.check = "1.2.12-1.1"
 
 # Valve A/B stuff
 atomupd-daemon.ignore = true
 
 # FIXME: has some not-yet-upstream patches, maybe we want them in nixpkgs?
-bluez.check = "5.77-1.3"
+bluez.check = "5.79-1.2"
 
 # more A/B stuff
 bmap-tools.ignore = true
 
 breakpad = { map = true, pkgrel = 1, fixup = "v" }
-
-# backports
-bubblewrap.check = "0.10.0-1.1"
 
 # Installer???
 calamares.ignore = true
@@ -53,16 +50,13 @@ casync.ignore = true
 ckbcomp.ignore = true
 
 # just disables tests
-clang.check = "16.0.6-2.2"
-
-# we don't enable this anywhere in the first place
-ddcutil.ignore = true
+clang.check = "18.1.8-4.1"
 
 # unused
 debos-git.ignore = true
 
-# backports
-discover.check = "5.27.10.1-1.2"
+# enables SteamOS A/B stuff
+discover.check = "6.2.2-1.1"
 
 # we don't need this
 dkms.ignore = true
@@ -78,17 +72,11 @@ drm_info-git.ignore = true
 # FIXME: GPU reset thingy, package?
 drm_janitor.ignore = true
 
-# backports already in nixpkgs
-e2fsprogs.check = "1.47.0-1.2"
-
 # we use nixpkgs version
 f3.ignore = true
 
 # Arch stuff
 filesystem.ignore = true
-
-# security backports we already have
-flatpak.check = "1:1.15.10-1.1"
 
 # FIXME: some internal Valve thing, investigate?
 foxnet.ignore = true
@@ -97,21 +85,12 @@ foxnetstatsd.ignore = true
 # we use nixpkgs version
 fwupd-minimal.ignore = true
 
-galileo-mura = { map = true, pkgrel = 1, fixup = "v" }
+galileo-mura = { map = true, pkgrel = 2, fixup = "v" }
 
 gamescope.map = ["gamescope", "gamescope-session"]
 
-# ???
-gcc.ignore = true
-
-# patches out flaky tests
-glib2.check = "2.78.6-1.1"
-
 # only there to split out locales
-glibc.check = "2.39-1.2"
-
-# grub build dep
-gnu-efi.ignore = true
+glibc.check = "2.40+r16+gaa533d58ff-2"
 
 # FIXME: dev tool
 gpu-trace.ignore = true
@@ -120,13 +99,13 @@ gpu-trace.ignore = true
 grub.ignore = true
 
 # we use nixos config
-holo-dmi-rules.check = "1.0-1"
+holo-dmi-rules.check = "1.0-2"
 
 # unused, check in case it ever becomes used again
 holo-fstab-repair.check = "0.1-1"
 
 # the split out locales
-holo-glibc-locales.check = "2.39-1"
+holo-glibc-locales.check = "2.40+r16+gaa533d58ff-2"
 
 # we don't use those repos
 holo-keyring.ignore = true
@@ -144,24 +123,23 @@ holo-rust-packaging-tools.ignore = true
 holo-zram-swap.check = "0.2-0"
 
 # FIXME: IME stuff
-ibus.ignore = true
 ibus-anthy.ignore = true
 ibus-pinyin.ignore = true
 ibus-table-cangjie-lite.ignore = true
 
 # backport from newer version than what we have
-iwd.check = "2.14-1.3"
+iwd.check = "3.0-1"
 
 jupiter-dock-updater-bin = { map = true, pkgrel = 1 }
 
-jupiter-fan-control = { map = true, pkgrel = 2 }
+jupiter-fan-control = { map = true, pkgrel = 3 }
 
 # we have our own, better one
 jupiter-firewall.ignore = true
 
 jupiter-hw-support = { map = ["jupiter-hw-support", "steamdeck-hw-theme", "steamdeck-firmware", "steamos-polkit-helpers"], pkgrel = 1 }
 
-jupiter-legacy-support.check = "1.149-1"
+jupiter-legacy-support.check = "1.150-1"
 
 # devkit stuff
 jupiter-resolved-nomdns.ignore = true
@@ -177,17 +155,10 @@ kdump-steamos.ignore = true
 kdumpst.ignore = true
 
 # just packaging changes
-kmod.check = "30-1.6"
+kmod.check = "33-3.2"
 
-# backports
-kpmcore.check = "23.04.2-2.1"
-kwin.check = "5.27.10-4"
-
-# security backports
-less.check = "1:643-1.1"
-
-# security backports
-libarchive.check = "3.7.2-1.1"
+# FIXME: look into libei hack
+kwin.check = "6.2.2-1.1"
 
 libdrm = { map = true, pkgrel = 1 }
 
@@ -197,10 +168,7 @@ libevdi.ignore = true
 # some internal tooling, not shipped
 libversion.ignore = true
 
-# some mainline kernel build
-linux.ignore = true
-
-linux-firmware-neptune = { map = "linux-firmware-jupiter", pkgrel = 2 }
+linux-firmware-neptune = { map = "linux-firmware-jupiter", pkgrel = 3 }
 
 # some other mainline kernel build
 linux-lts.ignore = true
@@ -225,13 +193,13 @@ linux-neptune-68 = { map = "linux_jovian", pkgrel = 1 }
 lsb-release.ignore = true
 
 # packaging changes, removes a heavy dependency
-maliit-keyboard.check = "2.3.1-2.1"
+maliit-keyboard.check = "2.3.1-3.1"
 
 # nixpkgs is ahead currently
-mangohud.check = "0.7.2.rc3.r11.g31f2ca5-2.2"
+mangohud.check = "0.7.2.rc3.r11.g31f2ca5-2.3"
 
 # we take upstream patches and apply on top of our mesa
-mesa.check = "24.0.5.183660.radeonsi_24.0.4-1"
+mesa.check = "24.0.5.183660.radeonsi_24.0.4-1.1"
 
 mesa-radv = { map = "mesa-radv-jupiter", pkgrel = "1", fixup = "mesa" }
 
@@ -243,36 +211,34 @@ neptune-ctl.ignore = true
 
 # we don't actually apply any of this, but it's worth checking
 # FIXME?
-networkmanager.check = "1.44.2-3.4"
-
-# security backports, nixpkgs has latest
-openssh.check = "9.6p1-3.1"
+networkmanager.check = "1.50.0-1.1"
 
 # Arch stuff
 pacman-contrib.ignore = true
 paru.ignore = true
 
 # we ship a newer version, but patches may be valuable
-pipewire.check = "1:1.0.3-3.1"
+pipewire.check = "1:1.2.6-1.1"
 
-# a bunch of tweaks
+# builds from master branch for Qt6
 # FIXME: do we want this?
-plasma-remotecontrollers.check = "5.27.11-1.2"
+plasma-remotecontrollers.check = "5.26.90.r256.g8daeecc-1"
 
-# just a backport from Arch?
-plasma-workspace.check = "5.27.10-2.2"
+# packaging changes for SteamOS A/B
+plasma-workspace.check = "6.2.2-1.1"
 
 # some weird patches, but nothing too relevant
-plymouth.check = "22.02.122-1.5"
+plymouth.check = "22.02.122-1.6"
 
 # packaging changes only, will probably not be relevant ever
 podman.ignore = true
 
 # we're tracking our fork but want to merge stuff into it
-powerbuttond.check = "2-1"
+powerbuttond.check = "2-2"
 
 # some internal tooling, not shipped
 python-libversion.ignore = true
+python-pylink-square.ignore = true
 
 # FIXME: more IME stuff
 pyzy.ignore = true
@@ -290,9 +256,6 @@ rtl88x2ce-dkms.ignore = true
 # not used yet
 scx-scheds.check = "1.0.5.linux.neptune.68-1"
 
-# big mess, our SDDM is much newer
-sddm-wayland.ignore = true
-
 # FIXME: package this
 steam-im-modules.ignore = true
 
@@ -301,9 +264,9 @@ steam-jupiter-stable.map = "steam-unwrapped"
 # we don't use this
 steam-jupiter-oobe.ignore = true
 
-steam_notif_daemon = { map = true, pkgrel = 1, fixup = "v" }
+steam_notif_daemon = { map = true, pkgrel = 2, fixup = "v" }
 
-steamdeck-dsp = { map = true, pkgrel = 1 }
+steamdeck-dsp = { map = true, pkgrel = "1.1" }
 
 # we don't ship those
 steamdeck-kde-presets.ignore = true
@@ -317,7 +280,7 @@ steamos-atomupd-client.ignore = true
 # applied as NixOS modules instead
 # check both to make sure we get the latest changes
 steamos-customizations-git.check = "20241030.1-1"
-steamos-customizations-jupiter.check = "20241030.1-1"
+steamos-customizations-jupiter.check = "20241030.1-2"
 
 # devkit stuff
 steamos-devkit-service.ignore = true
@@ -338,7 +301,7 @@ steamos-media-creation-git.ignore = true
 
 # Allows switching between iwd and wpa_supplicant wifi backends from Steam
 # FIXME: doesn't seem to be wired up?
-steamos-networking-tools.check = "1.0-1"
+steamos-networking-tools.check = "1.1-1"
 
 # more A/B stuff
 steamos-repair-backend-git.ignore = true
@@ -352,7 +315,7 @@ steamos-systemreport.ignore = true
 steamos-tweak-mtu-probing.check = "1-1"
 
 # SteamOS A/B specific patch
-systemd.check = "255.3-1.2"
+systemd.check = "256.7-1.1"
 
 # lul
 ttf-twemoji-default.ignore = true
@@ -361,14 +324,11 @@ ttf-twemoji-default.ignore = true
 umr.ignore = true
 
 # just disables tests, but may have stuff later
-upower.check = "0.99.15.jupiter-1.2"
+upower.check = "0.99.15.jupiter-1.3"
 
 # non-critical but would be nice to have
 # FIXME: package these
 usbhid-gadget-passthru.ignore = true
-
-# benchmark tool
-vkmark-git.ignore = true
 
 # non-critical but would be nice to have
 # FIXME: package this
@@ -376,23 +336,10 @@ vpower.ignore = true
 
 wakehook = { map = true, pkgrel = 2 }
 
-# we use upstream but check the versions
-wayland = { map = true, pkgrel = 2 }
-wayland-protocols = { map = true, pkgrel = 1 }
-
-# dependency of pipewire
-webrtc-audio-processing-1.ignore = true
-
-wireplumber.check = "0.5.5-1.2"
+wireplumber.check = "0.5.0-1"
 
 # ours is newer
 xdg-desktop-portal-gtk.ignore = true
 
-# upstream backport
-xorg-xwayland = { map = "xwayland", pkgrel = 1 }
-
-# build dependency
-xorgproto.ignore = true
-
 # Arch packaging fix, we don't care
-zenity-gtk3.check = "3.44.2-2"
+zenity-gtk3.check = "3.44.2-3"
