@@ -259,7 +259,7 @@ renderdoc-minimal.ignore = true
 rtl88x2ce-dkms.ignore = true
 
 # not used yet
-scx-scheds.check = "1.0.5.linux.neptune.68-1"
+scx-scheds.check = "1.0.6.linux.neptune.68-1"
 
 # FIXME: package this
 steam-im-modules.ignore = true
