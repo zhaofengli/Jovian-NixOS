@@ -129,6 +129,9 @@ ibus-anthy.ignore = true
 ibus-pinyin.ignore = true
 ibus-table-cangjie-lite.ignore = true
 
+# currently unused
+inputplumber.ignore = true
+
 # backport from newer version than what we have
 iwd.check = "3.0-1"
 
