@@ -334,7 +334,7 @@ usbhid-gadget-passthru.ignore = true
 # FIXME: package this
 vpower.ignore = true
 
-wakehook = { map = true, pkgrel = 2 }
+wakehook = { map = true, pkgrel = 1 }
 
 wireplumber.check = "0.5.0-1"
 
