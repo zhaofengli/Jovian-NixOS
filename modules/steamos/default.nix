@@ -11,6 +11,7 @@ in
     ./automount.nix
     ./bluetooth.nix
     ./boot.nix
+    ./earlyoom.nix
     ./mesa.nix
     ./misc.nix
     ./sysctl.nix

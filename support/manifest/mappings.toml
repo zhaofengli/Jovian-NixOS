@@ -101,6 +101,8 @@ grub.ignore = true
 # we use nixos config
 holo-dmi-rules.check = "1.0-2"
 
+holo-earlyoom.check = "1.0-1"
+
 # unused, check in case it ever becomes used again
 holo-fstab-repair.check = "0.1-1"
 
