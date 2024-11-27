@@ -274,7 +274,7 @@ steam-jupiter-oobe.ignore = true
 
 steam_notif_daemon = { map = true, pkgrel = 2, fixup = "v" }
 
-steamdeck-dsp = { map = true, pkgrel = "1.1" }
+steamdeck-dsp = { map = true, pkgrel = 1 }
 
 # we don't ship those
 steamdeck-kde-presets.ignore = true
@@ -344,7 +344,7 @@ vpower.ignore = true
 
 wakehook = { map = true, pkgrel = 1 }
 
-wireplumber.check = "0.5.0-1"
+wireplumber = { map = "wireplumber-jupiter", pkgrel = "1.2" }
 
 # ours is newer
 xdg-desktop-portal-gtk.ignore = true
