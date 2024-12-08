@@ -5,14 +5,14 @@ let
     kernelPatches
     linuxPackagesFor
   ;
-  linuxModulesOverlay = final: super: {
+  linuxModulesOverlay = final: prev: {
     ayn-platform = final.callPackage ./pkgs/ayn-platform { };
     ryzen_smu = final.callPackage ./pkgs/ryzen_smu { };
   };
 in
 rec {
-  linuxKernel = super.linuxKernel // {
-    packagesFor = kernel: (super.linuxKernel.packagesFor kernel).extend linuxModulesOverlay;
+  linuxKernel = prev.linuxKernel // {
+    packagesFor = kernel: (prev.linuxKernel.packagesFor kernel).extend linuxModulesOverlay;
   };
 
   linux-firmware-jupiter = final.callPackage ./pkgs/linux-firmware {
@@ -90,7 +90,7 @@ rec {
     ) { };
   };
 
-  jovian-power-button-handler = super.callPackage ./pkgs/jovian-power-button-handler { };
+  jovian-power-button-handler = final.callPackage ./pkgs/jovian-power-button-handler { };
 
   jovian-hardware-survey = final.callPackage ./pkgs/jovian-hardware-survey { };
 
