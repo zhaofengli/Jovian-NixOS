@@ -17,8 +17,8 @@
   gnused,
   gnutar,
   ibus,
+  kdePackages,
   mangohud,
-  plasma5Packages,
   powerbuttond,
   procps,
   steam_notif_daemon,
@@ -41,8 +41,8 @@ let
       gnused
       gnutar
       ibus
+      kdePackages.kconfig
       mangohud
-      plasma5Packages.kconfig
       powerbuttond
       procps
       steam_notif_daemon
@@ -53,7 +53,7 @@ let
     ];
     execer = [
       "cannot:${ibus}/bin/ibus-daemon"
-      "cannot:${plasma5Packages.kconfig}/bin/kwriteconfig5"
+      "cannot:${kdePackages.kconfig}/bin/kwriteconfig6"
       "cannot:${steamos-polkit-helpers}/bin/steamos-polkit-helpers/steamos-poweroff-now"
       "cannot:${steamos-polkit-helpers}/bin/steamos-polkit-helpers/steamos-reboot-now"
       "cannot:${steamos-polkit-helpers}/bin/steamos-polkit-helpers/steamos-retrigger-automounts"
@@ -89,7 +89,7 @@ let
       export PATH=/run/wrappers/bin:${gamescope}/bin:${mangohud}/bin:$PATH
   
       # Make gamescope discover the Steam cursor theme
-      export XCURSOR_PATH=${plasma5Packages.breeze-qt5}/share/icons:${steamdeck-hw-theme}/share/icons
+      export XCURSOR_PATH=${kdePackages.breeze}/share/icons:${steamdeck-hw-theme}/share/icons
     ''}";
   };
   start-gamescope-session-solution = {
@@ -107,17 +107,18 @@ let
   };
 in stdenv.mkDerivation(finalAttrs: {
   pname = "gamescope-session";
-  version = "3.15.14-1";
+  version = "3.15.14-1.2";
 
   src = fetchFromGitHub {
     owner = "Jovian-Experiments";
     repo = "PKGBUILDs-mirror";
     rev = "jupiter-main/gamescope-${finalAttrs.version}";
-    hash = "sha256-cVE54niHg9VO9m3/7e1mUTSEnWaNaN5HwkTaWbNucMY=";
+    hash = "sha256-cCZzoVdl+VVGMYwlxW7BmL/iwCU0p55g5WMKB8UCv6w=";
   };
 
   patches = [
     ./0001-gamescope-session-Add-xdg-environment-overrides.patch
+    ./0002-start-gamescope-session-do-not-set-XDG_DESKTOP_PORTA.patch
   ];
 
   postPatch = ''

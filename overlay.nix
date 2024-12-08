@@ -56,6 +56,10 @@ rec {
   steamos-manager = final.callPackage ./pkgs/steamos-manager { };
   steamos-polkit-helpers = final.callPackage ./pkgs/jupiter-hw-support/polkit-helpers.nix { };
   steamdeck-dsp = final.callPackage ./pkgs/steamdeck-dsp { };
+  wireplumber-jupiter = import ./pkgs/wireplumber {
+    wireplumber' = prev.wireplumber;
+    inherit (final) fetchFromGitHub;
+  };
 
   steamdeck-theme = final.callPackage ./pkgs/steamdeck-theme { };
 
